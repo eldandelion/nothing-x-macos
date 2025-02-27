@@ -5,7 +5,7 @@
 //  Created by Daniel on 2025/2/13.
 //
 
-enum EQProfiles : UInt8 {
+enum EQProfiles : UInt8, Codable {
     
     case BALANCED = 0
     case MORE_BASE = 3

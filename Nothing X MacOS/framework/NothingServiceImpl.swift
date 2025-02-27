@@ -20,9 +20,82 @@ private struct Request {
     let completion: (Result<Void, Error>) -> Void
     let requestTimeout: TimeInterval
     let responseTimeout: TimeInterval
+    var retryCount: Int = 0 // Track the number of retries
 }
 
 class NothingServiceImpl : NothingService {
+    
+    private var operationID = 0
+    private var cancellables = Set<AnyCancellable>()
+    private let bluetoothManager = BluetoothManager.shared
+    
+    private let classOfNothing:UInt32 = 2360324
+    // A queue to hold requests
+    private var requestQueue: [Request] = []
+    // A semaphore to control access to the queue
+    private let queueSemaphore = DispatchSemaphore(value: 1)
+    private let maxRetries = 3
+    // A flag to indicate if a request is currently being processed
+    private var isProcessing = false
+
+    private var nothingDevice: NothingDeviceFDTO? = nil
+    
+    init() {
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.CONNECTED.rawValue), object: nil, queue: .main) { notification in
+            // Handle the notification here
+            if let device = notification.object as? BluetoothDeviceEntity {
+                
+                    
+                    self.nothingDevice = NothingDeviceFDTO(bluetoothDetails: device)
+                    
+                    NotificationCenter.default.post(name: Notification.Name(DataNotifications.CONNECTED.rawValue), object: self.nothingDevice)
+                
+            }
+        }
+     
+
+        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.DATA_RECEIVED.rawValue), object: nil, queue: .main) { notification in
+            // Handle the notification here
+            if let userInfo = notification.userInfo, let data = userInfo["data"] as? [UInt8] {
+                if let userInfo = notification.userInfo, let data = userInfo["data"] as? [UInt8] {
+                    print("Data received in Nothing Service: \(data)")
+                    
+                    self.onDataReceived(rawData: data)
+                }
+            }
+        }
+        
+        
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
+            
+            if let deviceFramework = notification.object as? NothingDeviceFDTO {
+                print("Class has been updated in repository")
+                
+                let nothingDevice = NothingDeviceFDTO.toEntity(deviceFramework)
+                
+                NotificationCenter.default.post(name: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nothingDevice, userInfo: nil)
+            }
+        }
+        
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.FOUND.rawValue), object: nil, queue: .main) { notification in
+            
+           print("Found device")
+            
+            if let bluetoothDevice = notification.object as? BluetoothDeviceEntity {
+                
+                
+                NotificationCenter.default.post(name: Notification.Name(DataNotifications.FOUND.rawValue), object: bluetoothDevice, userInfo: nil)
+                
+                
+            }
+        }
+        
+        
+    }
+    
     
     func ringBuds() {
         setRingBuds(right: true, left: true, doRing: true)
@@ -76,95 +149,25 @@ class NothingServiceImpl : NothingService {
         }
     }
     
-    func connectToNothing(device: NothingDevice) {
+    func connectToNothing(device: BluetoothDeviceEntity) {
+        
+  
+        bluetoothManager.connectToDevice(address: device.mac, channelID: device.channelId)
         
     }
-    
-    
-    
-    
-    private var operationID = 0
-    private var cancellables = Set<AnyCancellable>()
-    private let bluetoothManager = BluetoothManager.shared
-    
-    private let classOfNothing:UInt32 = 2360324
-    
-    // A queue to hold requests
-    private var requestQueue: [Request] = []
-    
-    // A semaphore to control access to the queue
-    private let queueSemaphore = DispatchSemaphore(value: 1)
-    
-    // A flag to indicate if a request is currently being processed
-    private var isProcessing = false
-
-    
-    private var nothingDevice: FrameworkNothingDevice? = nil
-         
-    
-    init() {
         
-        #warning("On device discovery should return a list of currently connected paired earbuds + discovered - saved in the app")
-        #warning("Handle list processing in here, then send the list to the service")
-        
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.CONNECTED.rawValue), object: nil, queue: .main) { notification in
-            // Handle the notification here
-            if let userInfo = notification.userInfo, let data = userInfo["data"] as? BluetoothDevice {
-                if let userInfo = notification.userInfo, let data = userInfo["data"] as? BluetoothDevice {
-                    
-                    self.nothingDevice = FrameworkNothingDevice(bluetoothDetails: data)
-                }
-            }
-        }
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.DATA_RECEIVED.rawValue), object: nil, queue: .main) { notification in
-            // Handle the notification here
-            if let userInfo = notification.userInfo, let data = userInfo["data"] as? [UInt8] {
-                if let userInfo = notification.userInfo, let data = userInfo["data"] as? [UInt8] {
-                    print("Data received in Nothing Controller: \(data)")
-                    
-                    self.onDataReceived(rawData: data)
-                }
-            }
-        }
-        
-        
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
-            
-            if let deviceFramework = notification.object as? FrameworkNothingDevice {
-                print("Class has been updated in repository")
-                
-                let nothingDevice = FrameworkNothingDevice.fromNothingDeviceFramework(deviceFramework)
-                
-                NotificationCenter.default.post(name: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nothingDevice, userInfo: nil)
-            }
-        }
-        
-        
-        NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.FOUND.rawValue), object: nil, queue: .main) { notification in
-            
-           print("found device")
-            
-            if let bluetoothDevice = notification.object as? BluetoothDevice {
-                
-                
-                
-                
-                
-            }
-        }
-        
-        
-    }
-    
-    func getPairedNothing() -> [(address: String, name: String, isConnected: Bool)] {
-        return bluetoothManager.getPaired(withClass: Int(classOfNothing))
-    }
-    
     func discoverNothing() {
+        
+        let pairedDevices = bluetoothManager.getPaired(withClass: Int(classOfNothing))
+        
+        let connectedPaired = pairedDevices.filter({ $0.isConnected })
+        
+        for c in connectedPaired {
+            NotificationCenter.default.post(name: Notification.Name(DataNotifications.FOUND.rawValue), object: c, userInfo: nil)
+        }
+        
         bluetoothManager.startDeviceInquiry(withClass: classOfNothing)
+        
     }
     
     func isNothingConnected() -> Bool {
@@ -176,10 +179,16 @@ class NothingServiceImpl : NothingService {
     }
     
     func fetchData() {
-        //there is a change that device gets disconnected during transfer
-        //but it is low since it takes less than a second to fetch the data
-        //will fix it in the future
+        
+        print("fetching data")
+ 
+        #warning("there is a change that device gets disconnected during transfer but it is low since it takes less than a second to fetch the data will fix it in the future")
+        print("Nothing is connected \(isNothingConnected())")
+        print("Nothing device \(nothingDevice != nil)")
+        
         if isNothingConnected() && nothingDevice != nil {
+            
+            print("adding request")
             
             
             addRequest(command: Commands.GET_SERIAL_NUMBER, requestTimeout: 1000, responseTimeout: 1000) {
@@ -242,9 +251,9 @@ class NothingServiceImpl : NothingService {
     }
 
     
-    //low latency mode
+    #warning("low latency mode switch is not implemented")
     
-    func send(command: UInt16, payload: [UInt8] = []) {
+    private func send(command: UInt16, payload: [UInt8] = []) {
         var header: [UInt8] = [0x55, 0x60, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]
         
         operationID += 1
@@ -296,7 +305,7 @@ class NothingServiceImpl : NothingService {
         }
         
         // Get the next request from the queue
-        let request = requestQueue.removeFirst()
+        var request = requestQueue.removeFirst()
         isProcessing = true
         queueSemaphore.signal()
         
@@ -305,17 +314,31 @@ class NothingServiceImpl : NothingService {
         DispatchQueue.global().asyncAfter(deadline: requestTimeout) {
             if self.isProcessing {
                 print("Request timed out, attempting to repeat")
-                // Re-add the request to the queue
-                self.queueSemaphore.wait()
-                self.requestQueue.append(request) // Re-add the request
-                self.queueSemaphore.signal()
+                // Increment the retry count
+                request.retryCount += 1
                 
-                // Call the completion handler with a timeout error
-                request.completion(.failure(DeviceError.timeoutError("Request timed out.")))
-                self.isProcessing = false
-                
-                // Process the next request
-                self.processNextRequest()
+                // Check if the retry count exceeds the maximum allowed
+                if request.retryCount <= self.maxRetries {
+                    // Re-add the request to the queue
+                    self.queueSemaphore.wait()
+                    self.requestQueue.append(request) // Re-add the request
+                    self.queueSemaphore.signal()
+                    
+                    // Call the completion handler with a timeout error
+                    request.completion(.failure(DeviceError.timeoutError("Request timed out.")))
+                    self.isProcessing = false
+                    
+                    // Process the next request
+                    self.processNextRequest()
+                } else {
+                    // Handle the case where the maximum retries have been reached
+                    print("Maximum retries reached for request. Not re-adding to queue.")
+                    request.completion(.failure(DeviceError.timeoutError("Maximum retries reached.")))
+                    self.isProcessing = false
+                    
+                    // Process the next request
+                    self.processNextRequest()
+                }
             }
         }
         
@@ -324,7 +347,7 @@ class NothingServiceImpl : NothingService {
     }
     
     // Function to add a request to the queue
-    func addRequest(command: Commands, requestTimeout: TimeInterval, responseTimeout: TimeInterval, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func addRequest(command: Commands, requestTimeout: TimeInterval, responseTimeout: TimeInterval, completion: @escaping (Result<Void, Error>) -> Void) {
         
         let requestTimeoutInSeconds = TimeInterval(requestTimeout) / 1000.0
         let responseTimeoutInSeconds = TimeInterval(responseTimeout) / 1000.0
@@ -341,9 +364,6 @@ class NothingServiceImpl : NothingService {
         }
     }
 
-    
-    
-    
     private func readBattery(hexString: [UInt8]) {
         
         var connectedDevices = 0
@@ -450,7 +470,6 @@ class NothingServiceImpl : NothingService {
     }
     
    
-    
     private func readFirmware(hexArray: [UInt8]) -> String {
         
         // Initialize an empty string for the firmware version
@@ -482,9 +501,7 @@ class NothingServiceImpl : NothingService {
         return firmwareVersion
     }
     
-    
-    
-    func setRingBuds(right: Bool, left: Bool, doRing: Bool) {
+    private func setRingBuds(right: Bool, left: Bool, doRing: Bool) {
         
         var byteArray: [UInt8] = [0x00] // Initialize the byte array with a single element
 
@@ -506,9 +523,6 @@ class NothingServiceImpl : NothingService {
         }
         
     }
-    
-
-    
     
     private func onDataReceived(rawData: [UInt8]) {
         
@@ -565,6 +579,7 @@ class NothingServiceImpl : NothingService {
         case Commands.READ_ANC_TWO.rawValue:
             
             readANC(hexArray: rawData)
+        
             
         case Commands.READ_EQ_ONE.rawValue:
             

@@ -16,6 +16,7 @@ struct SettingsButtonView: View {
                 .font(.system(size: 16))
         }
         .buttonStyle(BlackImageButtonCicle())
+        .focusable(false)
     }
 }
 

@@ -5,7 +5,7 @@
 //  Created by Daniel on 2025/2/13.
 //
 
-enum Codenames : String{
+enum Codenames : String, Codable {
     case UNKNOWN = "0000"
     case ONE = "B181"
     case STICKS = "B157"

@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+class FetchDataUseCase : FetchDataUseCaseProtocol {
+    
+    private let service: NothingService
+    
+    init (service: NothingService) {
+        self.service = service
+    }
+    
+    func fetchData() {
+        service.fetchData()
+    }
+    
+    
+}

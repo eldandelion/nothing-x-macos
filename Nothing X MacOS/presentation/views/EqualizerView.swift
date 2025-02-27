@@ -8,7 +8,13 @@
 import SwiftUI
 
 struct EqualizerView: View {
+    
+    @EnvironmentObject var mainViewModel: MainViewViewModel
+    @ObservedObject var viewModel = EqualizerViewViewModel(nothingService: NothingServiceImpl())
+    
     var body: some View {
+        
+        
         VStack {
             // Back - Heading - Settings | Quit
             HStack {
@@ -48,44 +54,53 @@ struct EqualizerView: View {
                 HStack(spacing: 5) {
                     //BALANCED
                     Button("BALANCED") {
-                        print("BALANCED Button pressed!")
+                        viewModel.switchEQ(eq: .BALANCED)
                     }
-                    .buttonStyle(GreyButton())
+                    
+                    .buttonStyle(EQButton(selected: viewModel.eq == .BALANCED))
+                    
+                    
                     
                     //MORE BASS
                     Button("MORE BASS") {
-                        print("MORE BASS Button pressed!")
+                        viewModel.switchEQ(eq: .MORE_BASE)
                     }
-                    .buttonStyle(GreyButton())
-                }
+                    .buttonStyle(EQButton(selected: viewModel.eq == .MORE_BASE))                }
                 
                 //HStack - MORE TREBLE | Controls
                 HStack(spacing: 5) {
                     //MORE TREBLE
                     Button("MORE TREBLE") {
-                        print("MORE TREBLE Button pressed!")
+                        viewModel.switchEQ(eq: .MORE_TREBEL)
                     }
-                    .buttonStyle(GreyButton())
+                    .buttonStyle(EQButton(selected: viewModel.eq == .MORE_TREBEL))
                     
                     //VOICE
                     Button("VOICE") {
-                        print("VOICE Button pressed!")
+                        viewModel.switchEQ(eq: .VOICE)
                     }
-                    .buttonStyle(GreyButton())
-                }
-                
-                Spacer()
-
-            }
+                    .buttonStyle(EQButton(selected: viewModel.eq == .VOICE))                }
             
+            
+            
+            Spacer()
+            
+        }
+    
         }
         .navigationBarBackButtonHidden(true)
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
         .cornerRadius(8)
+        .onAppear {
+            viewModel.eq = mainViewModel.nothingDevice?.listeningMode ?? .BALANCED
+        }
     }
 }
+
+
+
 
 struct EqualizerView_Previews: PreviewProvider {
     static var previews: some View {

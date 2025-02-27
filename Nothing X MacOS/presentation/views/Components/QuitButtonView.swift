@@ -21,6 +21,7 @@ struct QuitButtonView: View {
         }
         .buttonStyle(BlackImageButtonCicle())
         .keyboardShortcut("q")
+        .focusable(false)
     }
 }
 

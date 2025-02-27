@@ -9,25 +9,59 @@ import Foundation
 
 class NoiseControlViewViewModel : ObservableObject {
     
-    let repository: Repository = RepositoryImpl()
+    private let nothingService: NothingService
     
-    
-    init() {
-        NotificationCenter.default.addObserver(forName: Notification.Name(Notifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
+    init(nothingService: NothingService) {
+        
+        self.nothingService = nothingService
+        
+       
+       
+        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
             
-            if let device = notification.object as? NothingDevice {
-                self.anc = device.anc
+            if let device = notification.object as? NothingDeviceEntity {
+                self.anc = self.ancToNoiseControlOptions(anc: device.anc)
                 
             }
         }
     }
         
     
-    @Published var anc: ANC = .TRANSPARENCY
+    @Published var anc: NoiseControlOptions = .off
     
+    func ancToNoiseControlOptions(anc: ANC) -> NoiseControlOptions {
+        
+        
+        switch anc {
+        case .OFF:
+            return .off
+        case .TRANSPARENCY:
+            return .transparency
+        case .ON_LOW:
+            return .anc
+        default:
+            return .off
+        }
+        
+        
+    }
+    
+    func noiseControlOptionsToAnc(option: NoiseControlOptions) -> ANC{
+        
+        switch option {
+        case .off:
+            return .OFF
+        case .transparency:
+            return .TRANSPARENCY
+        case .anc:
+            return .ON_LOW
+            
+            
+        }
+    }
     
     func switchANC(anc: ANC) {
-        repository.switchANC(mode: anc)
+        nothingService.switchANC(mode: anc)
     }
     
     

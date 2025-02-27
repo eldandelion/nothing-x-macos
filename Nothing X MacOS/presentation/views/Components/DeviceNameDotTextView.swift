@@ -18,8 +18,10 @@ struct DeviceNameDotTextView: View {
                 .padding()
                 .fixedSize()
                 .frame(width: 14, height: 66)
+            
             Spacer(minLength: 150)
-        }
+                
+        }.padding(.horizontal, 8)
     }
 }
 
