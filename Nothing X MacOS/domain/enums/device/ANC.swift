@@ -5,7 +5,7 @@
 //  Created by Daniel on 2025/2/13.
 //
 
-enum ANC : UInt8 {
+enum ANC : UInt8, Codable {
     
     case OFF = 0x05
     case TRANSPARENCY = 0x07

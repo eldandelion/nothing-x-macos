@@ -15,6 +15,7 @@ struct BudsSidePickerView<SelectedBud: Hashable>: View {
             ForEach(EarBudSide.allCases) { side in
                 VStack(spacing: 4) {
                     Text(side.rawValue.uppercased())
+                        .colorInvert()
                         .padding(0)
                         .font(.system(size: 12, weight: .regular))
                     

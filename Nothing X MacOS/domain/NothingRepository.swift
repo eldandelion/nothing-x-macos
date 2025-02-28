@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+
+protocol NothingRepository {
+    
+    func getSaved() -> [NothingDeviceEntity]
+    
+    func save(device: NothingDeviceEntity)
+    
+    func delete(device: NothingDeviceEntity)
+    
+    func contains(mac: String) -> Bool
+
+    
+}

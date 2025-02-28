@@ -8,6 +8,10 @@
 import SwiftUI
 
 struct NoiseControlView<SelectedANC: Hashable>: View {
+    
+    
+    @StateObject private var viewModel = NoiseControlViewViewModel(nothingService: NothingServiceImpl())
+    
     @Binding var selection: SelectedANC
     
     var body: some View {
@@ -27,21 +31,27 @@ struct NoiseControlView<SelectedANC: Hashable>: View {
                         .fill(Color(#colorLiteral(red: 0.10980392247438431, green: 0.11372549086809158, blue: 0.12156862765550613, alpha: 1)))
                         .frame(width: 180, height: 34)
                     
+                    
                     // 3 buttons
                     HStack(spacing: 5) {
                         ForEach(NoiseControlOptions.allCases) { option in
                             Button(action: {
-                                selection = option.id as! SelectedANC
+                                // Update the ViewModel's ANC state
                                 
-                                print("\(option) Button Pressed!")
+                                viewModel.anc = option
+                                
+                                viewModel.switchANC(anc: viewModel.noiseControlOptionsToAnc(option: option))
+                                
+                    
                             }) {
                                 Image(systemName: option.icon)
                             }
-                            .buttonStyle(ANCButton(selected: selection == option.id as! SelectedANC))
+                            .buttonStyle(ANCButton(selected: viewModel.anc == option))
                         }
                     }
                     .fixedSize()
                     .frame(width: 180, height: 34)
+                
                 }
                 
             }
@@ -53,6 +63,7 @@ struct NoiseControlView<SelectedANC: Hashable>: View {
 
 struct NoiseControlView_Previews: PreviewProvider {
     static let store = Store()
+   
     static var previews: some View {
         NoiseControlView(selection: .constant(NoiseControlOptions.transparency.rawValue)).environmentObject(store)
     }

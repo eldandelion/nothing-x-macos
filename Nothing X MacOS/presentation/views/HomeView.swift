@@ -9,6 +9,10 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var store: Store
+    @EnvironmentObject var viewModel: MainViewViewModel
+    
+    
+
     
     var body: some View {
         VStack {
@@ -37,13 +41,19 @@ struct HomeView: View {
                             
                             //HStack - Equaliser | Controls
                             HStack(spacing: 5) {
+                                
+                                
+                       
                                 //EQUALISER
                                 NavigationLink("EQUALISER", value: Destination.equalizer)
                                     .buttonStyle(GreyButton())
+                                    .focusable(false)
                                 
                                 //CONTROLS
                                 NavigationLink("CONTROLS", value: Destination.controls)
                                     .buttonStyle(GreyButton())
+                                    .focusable(false)
+                                
                             }
                             
                             Spacer()
@@ -69,17 +79,27 @@ struct HomeView: View {
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
-        .cornerRadius(8)
+//        .clipShape(RoundedRectangle(cornerRadius: 8))
+        
+        
     }
+        
 }
 
-struct HomeView_Previews: PreviewProvider {
-    static let store = Store()
-    
-    // For more advanced EnvironmentObject use in Previews
-    // https://www.hackingwithswift.com/forums/swiftui/swiftui-preview-and-atenvironmentobject/6844
-    
-    static var previews: some View {
-        HomeView().environmentObject(store)
-    }
-}
+//struct HomeView_Previews: PreviewProvider {
+//    static let store = Store()
+//    @State static var currentDestination: Destination? = .home
+//    @ObservedObject var viewModel: MainViewViewModel
+//    // For more advanced EnvironmentObject use in Previews
+//    // https://www.hackingwithswift.com/forums/swiftui/swiftui-preview-and-atenvironmentobject/6844
+//    
+////    static var previews: some View {
+////            // Use a Group to allow for multiple previews if needed
+////            Group {
+////                HomeView(currentDestination: $currentDestination, viewModel: MainViewViewModel()) // Pass the binding
+////                    .environmentObject(store)
+////                    .previewDisplayName("Home View Preview") // Optional: Name the preview
+////            }
+////        }
+//
+//}

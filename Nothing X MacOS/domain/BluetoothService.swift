@@ -6,3 +6,14 @@
 //
 
 import Foundation
+
+protocol BluetoothService {
+    
+
+    
+    func isBluetoothOn() -> Bool
+    
+    func isDeviceConnected() -> Bool
+    
+    
+}

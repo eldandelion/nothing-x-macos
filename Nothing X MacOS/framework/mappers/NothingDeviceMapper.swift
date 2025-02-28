@@ -8,10 +8,10 @@
 import Foundation
 
 
-extension NothingDeviceFramework {
+extension NothingDeviceFDTO {
     // Static method to convert NothingDeviceFramework to NothingDevice
-    static func fromNothingDeviceFramework(_ framework: NothingDeviceFramework) -> NothingDevice {
-        return NothingDevice(
+    static func toEntity(_ framework: NothingDeviceFDTO) -> NothingDeviceEntity {
+        return NothingDeviceEntity(
             name: framework.name,
             serial: framework.serial,
             codename: framework.codename,
@@ -29,15 +29,17 @@ extension NothingDeviceFramework {
             anc: framework.anc,
             listeningMode: framework.listeningMode,
             isLowLatencyOn: framework.isLowLatencyOn,
-            isInEarDetectionOn: framework.isInEarDetectionOn
+            isInEarDetectionOn: framework.isInEarDetectionOn,
+            bluetoothDetails: framework.bluetoothDetails
+            
         )
     }
 }
 
-extension NothingDevice {
+extension NothingDeviceEntity {
     // Static method to convert NothingDevice to NothingDeviceFramework
-    static func fromNothingDevice(_ device: NothingDevice) -> NothingDeviceFramework {
-        let framework = NothingDeviceFramework()
+    static func toFDTO(_ device: NothingDeviceEntity) -> NothingDeviceFDTO {
+        let framework = NothingDeviceFDTO(bluetoothDetails: device.bluetoothDetails)
         framework.name = device.name
         framework.serial = device.serial
         framework.codename = device.codename

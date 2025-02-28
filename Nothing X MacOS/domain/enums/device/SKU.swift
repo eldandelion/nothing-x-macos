@@ -6,7 +6,7 @@
 //
 
 
-enum SKU : String {
+enum SKU : String, Codable {
     
     case UNKNOWN = "--"
     case EAR_1_WHITE = "01"

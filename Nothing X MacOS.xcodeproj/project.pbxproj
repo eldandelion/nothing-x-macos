@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,34 +16,11 @@
 		D60C147029697E7C003E10D4 /* Nothing_X_MacOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C146F29697E7C003E10D4 /* Nothing_X_MacOSTests.swift */; };
 		D60C147A29697E7D003E10D4 /* Nothing_X_MacOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C147929697E7D003E10D4 /* Nothing_X_MacOSUITests.swift */; };
 		D60C147C29697E7D003E10D4 /* Nothing_X_MacOSUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C147B29697E7D003E10D4 /* Nothing_X_MacOSUITestsLaunchTests.swift */; };
-		D60C148A2969A98C003E10D4 /* BluetoothManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D60C14892969A98C003E10D4 /* BluetoothManager.swift */; };
-		D62BA6B5299A7EA3007D52C2 /* ButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D62BA6B4299A7EA2007D52C2 /* ButtonStyles.swift */; };
 		D65CE68329AA954700B5B84E /* nothing-ear-1.svg in Resources */ = {isa = PBXBuildFile; fileRef = D65CE68229AA954700B5B84E /* nothing-ear-1.svg */; };
-		D6A7B0602A664C66001DDEAF /* CRC16.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6A7B05F2A664C66001DDEAF /* CRC16.swift */; };
-		D6AEF335299BD56200FB5DBC /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF334299BD56200FB5DBC /* HomeView.swift */; };
-		D6AEF337299BD58600FB5DBC /* ConnectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF336299BD58600FB5DBC /* ConnectView.swift */; };
-		D6AEF339299BD5C900FB5DBC /* EqualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF338299BD5C900FB5DBC /* EqualizerView.swift */; };
-		D6AEF33B299BD5DE00FB5DBC /* ControlsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF33A299BD5DE00FB5DBC /* ControlsView.swift */; };
 		D6AEF340299BE69800FB5DBC /* ear_1_2x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AEF33C299BE69700FB5DBC /* ear_1_2x.png */; };
 		D6AEF341299BE69800FB5DBC /* ear_1_4x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AEF33D299BE69700FB5DBC /* ear_1_4x.png */; };
 		D6AEF342299BE69800FB5DBC /* ear_1.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AEF33E299BE69700FB5DBC /* ear_1.png */; };
 		D6AEF343299BE69800FB5DBC /* ear_1_3x.png in Resources */ = {isa = PBXBuildFile; fileRef = D6AEF33F299BE69700FB5DBC /* ear_1_3x.png */; };
-		D6AEF347299C16DC00FB5DBC /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF346299C16DC00FB5DBC /* SettingsView.swift */; };
-		D6AEF349299C16EB00FB5DBC /* FindMyBudsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF348299C16EB00FB5DBC /* FindMyBudsView.swift */; };
-		D6AEF34B299C7ED400FB5DBC /* BatteryIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF34A299C7ED400FB5DBC /* BatteryIndicatorView.swift */; };
-		D6AEF34F299C7FA500FB5DBC /* NoiseControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF34E299C7FA500FB5DBC /* NoiseControlView.swift */; };
-		D6AEF352299C807F00FB5DBC /* SettingsButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF351299C807F00FB5DBC /* SettingsButtonView.swift */; };
-		D6AEF354299C808B00FB5DBC /* QuitButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF353299C808B00FB5DBC /* QuitButtonView.swift */; };
-		D6AEF356299C80EF00FB5DBC /* DeviceNameDotTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF355299C80EF00FB5DBC /* DeviceNameDotTextView.swift */; };
-		D6AEF358299C846700FB5DBC /* BackButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF357299C846700FB5DBC /* BackButtonView.swift */; };
-		D6AEF35A299C98A400FB5DBC /* SwitchToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6AEF359299C98A400FB5DBC /* SwitchToggleStyle.swift */; };
-		D6BF8934299CDE430068BBE6 /* ProgressViewStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6BF8933299CDE430068BBE6 /* ProgressViewStyles.swift */; };
-		D6EAE47B29A4D4BE00C9675D /* BudsSidePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EAE47A29A4D4BE00C9675D /* BudsSidePickerView.swift */; };
-		D6EAE47D29A4DC6F00C9675D /* MenuStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EAE47C29A4DC6F00C9675D /* MenuStyles.swift */; };
-		D6EAE47F29A4E84200C9675D /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EAE47E29A4E84200C9675D /* Store.swift */; };
-		D6EAE48529A5F91A00C9675D /* ControlMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EAE48429A5F91A00C9675D /* ControlMenuView.swift */; };
-		D6EAE48729A69E5E00C9675D /* ControlsDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EAE48629A69E5E00C9675D /* ControlsDetailView.swift */; };
-		D6EB900D29A4868200D4C542 /* Destination.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6EB900C29A4868200D4C542 /* Destination.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,35 +53,19 @@
 		D60C147929697E7D003E10D4 /* Nothing_X_MacOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nothing_X_MacOSUITests.swift; sourceTree = "<group>"; };
 		D60C147B29697E7D003E10D4 /* Nothing_X_MacOSUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nothing_X_MacOSUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		D60C148829699B4D003E10D4 /* Nothing-X-MacOS-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Nothing-X-MacOS-Info.plist"; sourceTree = SOURCE_ROOT; };
-		D60C14892969A98C003E10D4 /* BluetoothManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BluetoothManager.swift; sourceTree = "<group>"; };
-		D62BA6B4299A7EA2007D52C2 /* ButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonStyles.swift; sourceTree = "<group>"; };
 		D65CE68229AA954700B5B84E /* nothing-ear-1.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "nothing-ear-1.svg"; sourceTree = "<group>"; };
-		D6A7B05F2A664C66001DDEAF /* CRC16.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CRC16.swift; sourceTree = "<group>"; };
-		D6AEF334299BD56200FB5DBC /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		D6AEF336299BD58600FB5DBC /* ConnectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectView.swift; sourceTree = "<group>"; };
-		D6AEF338299BD5C900FB5DBC /* EqualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EqualizerView.swift; sourceTree = "<group>"; };
-		D6AEF33A299BD5DE00FB5DBC /* ControlsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsView.swift; sourceTree = "<group>"; };
 		D6AEF33C299BE69700FB5DBC /* ear_1_2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_1_2x.png; sourceTree = "<group>"; };
 		D6AEF33D299BE69700FB5DBC /* ear_1_4x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_1_4x.png; sourceTree = "<group>"; };
 		D6AEF33E299BE69700FB5DBC /* ear_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_1.png; sourceTree = "<group>"; };
 		D6AEF33F299BE69700FB5DBC /* ear_1_3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ear_1_3x.png; sourceTree = "<group>"; };
-		D6AEF346299C16DC00FB5DBC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		D6AEF348299C16EB00FB5DBC /* FindMyBudsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FindMyBudsView.swift; sourceTree = "<group>"; };
-		D6AEF34A299C7ED400FB5DBC /* BatteryIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatteryIndicatorView.swift; sourceTree = "<group>"; };
-		D6AEF34E299C7FA500FB5DBC /* NoiseControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoiseControlView.swift; sourceTree = "<group>"; };
-		D6AEF351299C807F00FB5DBC /* SettingsButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButtonView.swift; sourceTree = "<group>"; };
-		D6AEF353299C808B00FB5DBC /* QuitButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuitButtonView.swift; sourceTree = "<group>"; };
-		D6AEF355299C80EF00FB5DBC /* DeviceNameDotTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceNameDotTextView.swift; sourceTree = "<group>"; };
-		D6AEF357299C846700FB5DBC /* BackButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackButtonView.swift; sourceTree = "<group>"; };
-		D6AEF359299C98A400FB5DBC /* SwitchToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitchToggleStyle.swift; sourceTree = "<group>"; };
-		D6BF8933299CDE430068BBE6 /* ProgressViewStyles.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressViewStyles.swift; sourceTree = "<group>"; };
-		D6EAE47A29A4D4BE00C9675D /* BudsSidePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudsSidePickerView.swift; sourceTree = "<group>"; };
-		D6EAE47C29A4DC6F00C9675D /* MenuStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuStyles.swift; sourceTree = "<group>"; };
-		D6EAE47E29A4E84200C9675D /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
-		D6EAE48429A5F91A00C9675D /* ControlMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlMenuView.swift; sourceTree = "<group>"; };
-		D6EAE48629A69E5E00C9675D /* ControlsDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsDetailView.swift; sourceTree = "<group>"; };
-		D6EB900C29A4868200D4C542 /* Destination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Destination.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		657C06512D6458BF003B83D2 /* data */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = data; sourceTree = "<group>"; };
+		657C065B2D6458BF003B83D2 /* domain */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = domain; sourceTree = "<group>"; };
+		657C06682D6458BF003B83D2 /* framework */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = framework; sourceTree = "<group>"; };
+		657C06692D6458BF003B83D2 /* presentation */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = presentation; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D60C145729697E7B003E10D4 /* Frameworks */ = {
@@ -131,44 +92,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		D60A9B02299265D000749EB6 /* Resources */ = {
+		D60A9B02299265D000749EB6 /* resources */ = {
 			isa = PBXGroup;
 			children = (
-				D6968CEC299419780010C54D /* Images */,
-				D60A9B07299268ED00749EB6 /* Fonts */,
+				D6968CEC299419780010C54D /* images */,
+				D60A9B07299268ED00749EB6 /* fonts */,
 			);
-			path = Resources;
+			path = resources;
 			sourceTree = "<group>";
 		};
-		D60A9B03299265E400749EB6 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				D6AEF34D299C7F7D00FB5DBC /* Components */,
-				D6AEF336299BD58600FB5DBC /* ConnectView.swift */,
-				D6AEF334299BD56200FB5DBC /* HomeView.swift */,
-				D6AEF338299BD5C900FB5DBC /* EqualizerView.swift */,
-				D6AEF33A299BD5DE00FB5DBC /* ControlsView.swift */,
-				D6EAE48629A69E5E00C9675D /* ControlsDetailView.swift */,
-				D6AEF346299C16DC00FB5DBC /* SettingsView.swift */,
-				D6AEF348299C16EB00FB5DBC /* FindMyBudsView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		D60A9B04299265F600749EB6 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				D6EAE47E29A4E84200C9675D /* Store.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		D60A9B07299268ED00749EB6 /* Fonts */ = {
+		D60A9B07299268ED00749EB6 /* fonts */ = {
 			isa = PBXGroup;
 			children = (
 				D60A9B082992693300749EB6 /* 5by7.ttf */,
 			);
-			path = Fonts;
+			path = fonts;
 			sourceTree = "<group>";
 		};
 		D60C145129697E7B003E10D4 = {
@@ -194,12 +132,12 @@
 		D60C145C29697E7B003E10D4 /* Nothing X MacOS */ = {
 			isa = PBXGroup;
 			children = (
+				657C06512D6458BF003B83D2 /* data */,
+				657C065B2D6458BF003B83D2 /* domain */,
+				657C06682D6458BF003B83D2 /* framework */,
+				657C06692D6458BF003B83D2 /* presentation */,
 				D60C145D29697E7B003E10D4 /* Nothing_X_MacOSApp.swift */,
-				D6AEF32D299BD06F00FB5DBC /* Utilities */,
-				D6AEF34C299C7F5900FB5DBC /* Styles */,
-				D60A9B04299265F600749EB6 /* Models */,
-				D60A9B03299265E400749EB6 /* Views */,
-				D60A9B02299265D000749EB6 /* Resources */,
+				D60A9B02299265D000749EB6 /* resources */,
 				D60C148829699B4D003E10D4 /* Nothing-X-MacOS-Info.plist */,
 				D60C146129697E7C003E10D4 /* Assets.xcassets */,
 				D60C146629697E7C003E10D4 /* Nothing_X_MacOS.entitlements */,
@@ -233,7 +171,7 @@
 			path = "Nothing X MacOSUITests";
 			sourceTree = "<group>";
 		};
-		D6968CEC299419780010C54D /* Images */ = {
+		D6968CEC299419780010C54D /* images */ = {
 			isa = PBXGroup;
 			children = (
 				D6AEF33C299BE69700FB5DBC /* ear_1_2x.png */,
@@ -242,43 +180,7 @@
 				D6AEF33E299BE69700FB5DBC /* ear_1.png */,
 				D65CE68229AA954700B5B84E /* nothing-ear-1.svg */,
 			);
-			path = Images;
-			sourceTree = "<group>";
-		};
-		D6AEF32D299BD06F00FB5DBC /* Utilities */ = {
-			isa = PBXGroup;
-			children = (
-				D60C14892969A98C003E10D4 /* BluetoothManager.swift */,
-				D6EB900C29A4868200D4C542 /* Destination.swift */,
-				D6A7B05F2A664C66001DDEAF /* CRC16.swift */,
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
-		D6AEF34C299C7F5900FB5DBC /* Styles */ = {
-			isa = PBXGroup;
-			children = (
-				D62BA6B4299A7EA2007D52C2 /* ButtonStyles.swift */,
-				D6BF8933299CDE430068BBE6 /* ProgressViewStyles.swift */,
-				D6AEF359299C98A400FB5DBC /* SwitchToggleStyle.swift */,
-				D6EAE47C29A4DC6F00C9675D /* MenuStyles.swift */,
-			);
-			path = Styles;
-			sourceTree = "<group>";
-		};
-		D6AEF34D299C7F7D00FB5DBC /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				D6AEF34A299C7ED400FB5DBC /* BatteryIndicatorView.swift */,
-				D6AEF351299C807F00FB5DBC /* SettingsButtonView.swift */,
-				D6AEF353299C808B00FB5DBC /* QuitButtonView.swift */,
-				D6AEF357299C846700FB5DBC /* BackButtonView.swift */,
-				D6AEF355299C80EF00FB5DBC /* DeviceNameDotTextView.swift */,
-				D6AEF34E299C7FA500FB5DBC /* NoiseControlView.swift */,
-				D6EAE47A29A4D4BE00C9675D /* BudsSidePickerView.swift */,
-				D6EAE48429A5F91A00C9675D /* ControlMenuView.swift */,
-			);
-			path = Components;
+			path = images;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -295,6 +197,12 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				657C06512D6458BF003B83D2 /* data */,
+				657C065B2D6458BF003B83D2 /* domain */,
+				657C06682D6458BF003B83D2 /* framework */,
+				657C06692D6458BF003B83D2 /* presentation */,
 			);
 			name = "Nothing X MacOS";
 			productName = "Nothing X MacOS";
@@ -419,30 +327,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D6EAE47F29A4E84200C9675D /* Store.swift in Sources */,
-				D62BA6B5299A7EA3007D52C2 /* ButtonStyles.swift in Sources */,
-				D6AEF349299C16EB00FB5DBC /* FindMyBudsView.swift in Sources */,
-				D6EB900D29A4868200D4C542 /* Destination.swift in Sources */,
-				D60C148A2969A98C003E10D4 /* BluetoothManager.swift in Sources */,
-				D6AEF339299BD5C900FB5DBC /* EqualizerView.swift in Sources */,
-				D6AEF352299C807F00FB5DBC /* SettingsButtonView.swift in Sources */,
-				D6AEF347299C16DC00FB5DBC /* SettingsView.swift in Sources */,
-				D6AEF33B299BD5DE00FB5DBC /* ControlsView.swift in Sources */,
-				D6EAE47D29A4DC6F00C9675D /* MenuStyles.swift in Sources */,
-				D6AEF358299C846700FB5DBC /* BackButtonView.swift in Sources */,
-				D6AEF356299C80EF00FB5DBC /* DeviceNameDotTextView.swift in Sources */,
-				D6AEF34F299C7FA500FB5DBC /* NoiseControlView.swift in Sources */,
-				D6A7B0602A664C66001DDEAF /* CRC16.swift in Sources */,
-				D6BF8934299CDE430068BBE6 /* ProgressViewStyles.swift in Sources */,
-				D6AEF354299C808B00FB5DBC /* QuitButtonView.swift in Sources */,
-				D6AEF35A299C98A400FB5DBC /* SwitchToggleStyle.swift in Sources */,
-				D6AEF337299BD58600FB5DBC /* ConnectView.swift in Sources */,
-				D6AEF335299BD56200FB5DBC /* HomeView.swift in Sources */,
-				D6EAE48529A5F91A00C9675D /* ControlMenuView.swift in Sources */,
-				D6AEF34B299C7ED400FB5DBC /* BatteryIndicatorView.swift in Sources */,
-				D6EAE48729A69E5E00C9675D /* ControlsDetailView.swift in Sources */,
 				D60C145E29697E7B003E10D4 /* Nothing_X_MacOSApp.swift in Sources */,
-				D6EAE47B29A4D4BE00C9675D /* BudsSidePickerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -603,7 +488,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nothing X MacOS/Preview Content\"";
-				DEVELOPMENT_TEAM = ZDQ9CMTR26;
+				DEVELOPMENT_TEAM = 32ZNHQH75S;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -636,7 +521,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Nothing X MacOS/Preview Content\"";
-				DEVELOPMENT_TEAM = ZDQ9CMTR26;
+				DEVELOPMENT_TEAM = 32ZNHQH75S;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
