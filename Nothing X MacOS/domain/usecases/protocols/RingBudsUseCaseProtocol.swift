@@ -6,3 +6,10 @@
 //
 
 import Foundation
+
+
+protocol RingBudsUseCaseProtocol {
+    
+    func ringBuds()
+    
+}

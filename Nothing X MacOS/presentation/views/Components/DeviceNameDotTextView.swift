@@ -13,7 +13,7 @@ struct DeviceNameDotTextView: View {
             Spacer(minLength: 5)
             //ear (1)
             Text("ear (1)")
-                .font(.custom("5by7", size: 20)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
+                .font(.custom("5by7", size: 20)).foregroundColor(Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)))
                 .rotationEffect(.degrees(-90))
                 .padding()
                 .fixedSize()
@@ -21,7 +21,7 @@ struct DeviceNameDotTextView: View {
             
             Spacer(minLength: 150)
                 
-        }.padding(.horizontal, 8)
+        }.padding(.horizontal, 6)
     }
 }
 

@@ -27,7 +27,7 @@ struct BatteryIndicatorView: View {
             ProgressView("\(Int(viewModel.rightBattery))% R", value: Float(viewModel.rightBattery), total: 100)
                 .progressViewStyle(NothingProgressViewStyle())
         }
-        .frame(width: 170)
+        .frame(width: 180)
     }
 }
 

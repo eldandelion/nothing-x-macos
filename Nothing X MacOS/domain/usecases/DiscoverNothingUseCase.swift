@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+class DiscoverNothingUseCase : DiscoverNothingUseCaseProtocol {
+    
+    
+    private let nothingService: NothingService
+    
+    init(nothingService: NothingService) {
+        self.nothingService = nothingService
+    }
+    
+    func discoverNothing() {
+        nothingService.discoverNothing()
+    }
+    
+}

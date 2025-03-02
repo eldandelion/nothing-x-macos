@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+
+class RingBudsUseCase : RingBudsUseCaseProtocol{
+    
+    private let nothingService: NothingService
+    
+    init(nothingService: NothingService) {
+        self.nothingService = nothingService
+    }
+    
+    func ringBuds() {
+        nothingService.ringBuds()
+    }
+    
+}

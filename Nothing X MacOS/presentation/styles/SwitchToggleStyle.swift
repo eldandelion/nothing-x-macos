@@ -13,6 +13,8 @@ struct SwitchToggleStyle: ToggleStyle {
         return HStack {
             configuration.label
                 .font(.system(size: 10, weight: .light))
+                .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
+                .textCase(.uppercase)
             Spacer()
             Toggle(configuration)
                 .labelsHidden()

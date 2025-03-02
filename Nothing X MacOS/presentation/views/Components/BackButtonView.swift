@@ -16,11 +16,13 @@ struct BackButtonView: View {
             dismiss()
         }) {
             Image(systemName: "arrow.backward")
-                .colorInvert()
+                
                 .font(.system(size: 16))
+                .foregroundColor(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
         }
         .buttonStyle(BlackImageButtonCicle())
         .focusable(false)
+    
   
     }
 }

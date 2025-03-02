@@ -6,3 +6,17 @@
 //
 
 import Foundation
+
+class SwitchEqUseCase : SwitchEqUseCaseProtocol {
+    
+    private let service: NothingService
+    
+    init(service: NothingService) {
+        self.service = service
+    }
+    
+    func switchEQ(mode: EQProfiles) {
+        service.switchEQ(mode: mode)
+    }
+    
+}

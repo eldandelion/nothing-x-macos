@@ -6,3 +6,18 @@
 //
 
 import Foundation
+
+class ConnectToNothingUseCase : ConnectToNothingUseCaseProtocol {
+    
+    
+    private let nothingService: NothingService
+    
+    init(nothingService: NothingService) {
+        self.nothingService = nothingService
+    }
+    
+    func connectToNothing(device: BluetoothDeviceEntity) {
+        nothingService.connectToNothing(device: device)
+    }
+    
+}

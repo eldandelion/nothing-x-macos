@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+
+protocol SwitchAncUseCaseProtocol {
+    
+    func switchANC(mode: ANC)
+    
+    
+    
+}

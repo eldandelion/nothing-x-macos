@@ -43,7 +43,7 @@ struct ControlsView: View {
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
-        .cornerRadius(8)
+        
     }
 }
 

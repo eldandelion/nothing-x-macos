@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+protocol ConnectToNothingUseCaseProtocol {
+    
+    
+    func connectToNothing(device: BluetoothDeviceEntity)
+}

@@ -7,6 +7,14 @@
 
 import Foundation
 
+enum DiscoverStates {
+    case not_discovering
+    case discovering
+    case found
+    case not_found
+    case connecting
+    case failed_to_connect
+}
 
 enum TripleTapOptions: String, CaseIterable, Hashable {
     case skip_forward = "skip forward"

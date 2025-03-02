@@ -68,7 +68,7 @@ class BluetoothManager: NSObject, IOBluetoothDeviceInquiryDelegate, IOBluetoothR
                 BluetoothDeviceEntity(
                     name: device.name ?? "Unknown",
                     mac: device.addressString,
-                    channelId: 0, // Set channelId as needed; using 0 as a placeholder
+                    channelId: 15, // Set channelId as needed; using 0 as a placeholder
                     isPaired: true, // Assuming these devices are paired
                     isConnected: device.isConnected()
                 )
@@ -105,6 +105,8 @@ class BluetoothManager: NSObject, IOBluetoothDeviceInquiryDelegate, IOBluetoothR
     }
     
     func connectToDevice(address: String, channelID: UInt8) {
+        
+        deviceInquiry?.stop()
         
         
         DispatchQueue.global(qos: .userInitiated).async {

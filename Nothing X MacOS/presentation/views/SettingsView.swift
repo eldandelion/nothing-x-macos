@@ -29,21 +29,22 @@ struct SettingsView: View {
                 
                 HStack {
                     // Heading
-                    Text("DEVICE SETTINGS")
+                    Text("Device settings")
                         .font(.system(size: 14, weight: .regular))
                         .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                         .multilineTextAlignment(.center)
+                        .textCase(.uppercase)
                     
                     Spacer()
                 }
                 
                 VStack(alignment: .center) {
                     // IN-EAR DETECT
-                    Toggle("IN-EAR DETECTION 􀅴", isOn: $InEarDetection).help(Text("Automatically play audio when earbuds are in and pause when removed"))
+                    Toggle("In-ear detection 􀅴", isOn: $InEarDetection).help(Text("Automatically play audio when earbuds are in and pause when removed"))
                         
                     
                     // LOW LAG MODE
-                    Toggle("LOW LAG MODE 􀅴", isOn: $LowLagMode).help(Text("Minimise latency for an improved gaming experience."))
+                    Toggle("Low lag mode 􀅴", isOn: $LowLagMode).help(Text("Minimise latency for an improved gaming experience."))
                     
                     // Find My Earbuds
                     NavigationLink("FIND MY EARBUDS", value: Destination.findMyBuds)
@@ -61,7 +62,7 @@ struct SettingsView: View {
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
-        .cornerRadius(8)
+        
     }
 }
 

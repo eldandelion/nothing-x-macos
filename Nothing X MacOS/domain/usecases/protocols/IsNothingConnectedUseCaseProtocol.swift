@@ -6,3 +6,12 @@
 //
 
 import Foundation
+
+protocol IsNothingConnectedUseCaseProtocol {
+    
+    
+    func isNothingConnected() -> Bool
+    
+    func isNothingConnected() -> BluetoothDeviceEntity?
+    
+}

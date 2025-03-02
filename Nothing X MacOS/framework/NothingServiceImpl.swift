@@ -170,6 +170,10 @@ class NothingServiceImpl : NothingService {
         
     }
     
+    func isNothingConnected() -> BluetoothDeviceEntity? {
+        return nothingDevice?.bluetoothDetails
+    }
+    
     func isNothingConnected() -> Bool {
         return bluetoothManager.isDeviceConnected()
     }

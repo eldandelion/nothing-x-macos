@@ -17,4 +17,5 @@ enum Destination: String, CaseIterable, Hashable {
     case settings = "settings"
     case findMyBuds = "findMyBuds"
     case connect = "connect"
+    case discover = "discover"
 }

@@ -43,6 +43,11 @@ struct ConnectView: View {
                     VStack {
                         // Ear 1 Image
                         Image("ear_1")
+                            .overlay(
+                                LinearGradient(gradient: Gradient(colors: [Color.black.opacity(0.0), Color.black.opacity(0.8)]), startPoint: .top, endPoint: .bottom)
+                                    .blendMode(.darken) // Blend mode to darken the image
+                            )
+                            
                         
                         Spacer(minLength: 15)
                         
@@ -70,14 +75,20 @@ struct ConnectView: View {
                     
                     
                 }
+                
             }
         .padding(4)
         .background(.black)
-        .frame(width: 250, height: 230)
-        .cornerRadius(8)
+        .frame(width: 250,height: 230)
+        
+        
+        
     }
         
+        
+        
 }
+
 
 struct ConnectView_Previews: PreviewProvider {
     static var previews: some View {

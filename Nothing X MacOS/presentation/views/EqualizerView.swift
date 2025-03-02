@@ -39,6 +39,7 @@ struct EqualizerView: View {
                         .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 4)
+                        .textCase(.uppercase)
                     
                     // Desc
                     Text("Customise your sound by selecting your favourite preset.")
@@ -53,7 +54,7 @@ struct EqualizerView: View {
                 //HStack - Balanced | MORE BASS
                 HStack(spacing: 5) {
                     //BALANCED
-                    Button("BALANCED") {
+                    Button("Balanced") {
                         viewModel.switchEQ(eq: .BALANCED)
                     }
                     
@@ -62,7 +63,7 @@ struct EqualizerView: View {
                     
                     
                     //MORE BASS
-                    Button("MORE BASS") {
+                    Button("More bass") {
                         viewModel.switchEQ(eq: .MORE_BASE)
                     }
                     .buttonStyle(EQButton(selected: viewModel.eq == .MORE_BASE))                }
@@ -70,13 +71,13 @@ struct EqualizerView: View {
                 //HStack - MORE TREBLE | Controls
                 HStack(spacing: 5) {
                     //MORE TREBLE
-                    Button("MORE TREBLE") {
+                    Button("More trebel") {
                         viewModel.switchEQ(eq: .MORE_TREBEL)
                     }
                     .buttonStyle(EQButton(selected: viewModel.eq == .MORE_TREBEL))
                     
                     //VOICE
-                    Button("VOICE") {
+                    Button("Voice") {
                         viewModel.switchEQ(eq: .VOICE)
                     }
                     .buttonStyle(EQButton(selected: viewModel.eq == .VOICE))                }
@@ -92,7 +93,7 @@ struct EqualizerView: View {
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
-        .cornerRadius(8)
+    
         .onAppear {
             viewModel.eq = mainViewModel.nothingDevice?.listeningMode ?? .BALANCED
         }
@@ -100,10 +101,72 @@ struct EqualizerView: View {
 }
 
 
+class MockNothingService : NothingService {
+    func ringBuds() {
+    
+    }
+    
+    func stopRingingBuds() {
+        
+    }
+    
+    func switchANC(mode: ANC) {
+        
+    }
+    
+    func switchEQ(mode: EQProfiles) {
+        
+    }
+    
+    func fetchData() {
+        
+    }
+    
+    func discoverNothing() {
+        
+    }
+    
+    func connectToNothing(device: BluetoothDeviceEntity) {
+        
+        
+    }
+    
+    func isNothingConnected() -> BluetoothDeviceEntity? {
+        return nil
+    }
+    
+    func isNothingConnected() -> Bool {
+        return true
+    }
+    
+    
+}
 
+class MockMainViewModel : ObservableObject {
+    
+    @Published var rightBattery: Double? = nil
+    @Published var leftBattery: Double? = nil
+    
+    @Published var currentDestination: Destination? // Published property for destination
+    @Published var nothingDevice: NothingDeviceEntity?
+    
+    init() {
+        
+    }
+}
 
 struct EqualizerView_Previews: PreviewProvider {
+   
+    @ObservedObject var viewModel = EqualizerViewViewModel(nothingService: MockNothingService())
     static var previews: some View {
+        
+        let mainViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: MockNothingService())
+        
+        
+        
         EqualizerView()
+            .environmentObject(mainViewModel)
+            
+            
     }
 }

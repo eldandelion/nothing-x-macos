@@ -12,7 +12,8 @@ class MainViewViewModel : ObservableObject {
     
     
     private let bluetoothService: BluetoothService
-    private let nothingService: NothingService = NothingServiceImpl()
+    
+    private let fetchDataUseCase: FetchDataUseCaseProtocol
     
     private let jsonEncoder: JsonEncoder = JsonEncoder(fileName: "configurations")
     private let nothingRepository: NothingRepository
@@ -23,24 +24,14 @@ class MainViewViewModel : ObservableObject {
     @Published var currentDestination: Destination? // Published property for destination
     @Published var nothingDevice: NothingDeviceEntity?
     
-    init(bluetoothService: BluetoothService, nothingRepository: NothingRepository) {
+    init(bluetoothService: BluetoothService, nothingRepository: NothingRepository, nothingService: NothingService) {
         
         self.bluetoothService = bluetoothService
         self.nothingRepository = nothingRepository
-        
+        self.fetchDataUseCase = FetchDataUseCase(service: nothingService)
  
         
-//        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.FOUND.rawValue), object: nil, queue: .main) { notification in
-//            
-//            if let bluetoothDevice = notification.object as? BluetoothDeviceEntity {
-//                
-//                print("discovered device")
-//                print("address: \(bluetoothDevice.mac)")
-//                self.nothingService.connectToNothing(device: bluetoothDevice)
-//                
-//                
-//            }
-//        }
+
         
 //        NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.OPENED_RFCOMM_CHANNEL.rawValue), object: nil, queue: .main) { notification in
 //        
@@ -49,15 +40,6 @@ class MainViewViewModel : ObservableObject {
 //        }
         
         
-        
-//        NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
-//            
-//            if let nothingDevice = notification.object as? NothingDeviceEntity {
-//                
-//                self.jsonEncoder.addOrUpdateDevice(nothingDevice.toDTO())
-//                
-//            }
-//        }
         
         NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.CLOSED_RFCOMM_CHANNEL.rawValue), object: nil, queue: .main) {
             notification in
@@ -70,17 +52,19 @@ class MainViewViewModel : ObservableObject {
         NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.OPENED_RFCOMM_CHANNEL.rawValue), object: nil, queue: .main) {
             notification in
             
-            self.nothingService.fetchData()
+            self.fetchDataUseCase.fetchData()
             
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
             
-            if self.currentDestination == .connect {
+#warning("if there is a device currently connected and you are trying to connect or discover another device at some point it might just snap to home screen")
+            if self.currentDestination == .connect || self.currentDestination == .discover {
                 self.currentDestination = .home
             }
             if let device = notification.object as? NothingDeviceEntity {
                 self.nothingDevice = device
+                self.jsonEncoder.addOrUpdateDevice(device.toDTO())
                 
                 self.rightBattery = Double(device.rightBattery)
                 self.leftBattery = Double(device.leftBattery)
@@ -96,7 +80,7 @@ class MainViewViewModel : ObservableObject {
             if (!devices.isEmpty) {
                 currentDestination = .connect
             } else {
-                // go to discover
+                currentDestination = .discover
             }
             
         } else {

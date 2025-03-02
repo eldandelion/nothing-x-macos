@@ -12,7 +12,7 @@ struct SettingsButtonView: View {
         // Settings
         NavigationLink(value: Destination.settings) {
             Image(systemName: "gearshape")
-                .colorInvert()
+                .foregroundColor(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
                 .font(.system(size: 16))
         }
         .buttonStyle(BlackImageButtonCicle())

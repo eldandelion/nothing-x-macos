@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+
+protocol DiscoverNothingUseCaseProtocol {
+    
+    
+    func discoverNothing()
+    
+}

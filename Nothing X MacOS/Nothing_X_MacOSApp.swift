@@ -6,15 +6,13 @@
 //
 
 import SwiftUI
+import TipKit
 
 @main
 struct Nothing_X_MacOSApp: App {
     @StateObject var store = Store()
-    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl()) // Observe the ViewModel
+    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl()) // Observe the ViewModel
     
-    
-    
-
 
     
     var body: some Scene {
@@ -33,9 +31,20 @@ struct Nothing_X_MacOSApp: App {
                                                        case .controlsTripleTap: ControlsDetailView(destination: .controlsTripleTap)
                                                        case .controlsTapHold: ControlsDetailView(destination: .controlsTapHold)
                                                        case .settings: SettingsView()
-                                                       case .findMyBuds: FindMyBudsView()
+                                                   case .findMyBuds: FindMyBudsView().task {
+                                                       if #available(macOS 14.0, *) {
+                                                           try? Tips.resetDatastore()
+                                                           try? Tips.configure([.displayFrequency(.immediate)
+                                                                               ])
+                                                       } else {
+                                                           // Fallback on earlier versions
+                                                       }
+                                                   }
+                                                   case .discover: DiscoverView()
                                                        
                                                     default: ConnectView()
+                                                           
+                                                           
                                                        
                                                    }
                                                }
@@ -45,13 +54,19 @@ struct Nothing_X_MacOSApp: App {
                         SettingsView()
                     case .connect:
                         ConnectView()
+                    
+                    case .discover:
+                        DiscoverView()
+                            
                     default:
-                        ConnectView()
+                        DiscoverView()
+                            
                     }
                     
                 } else {
                     // Default view if no destination is set
-                    ConnectView()
+                    DiscoverView()
+                        
                 }
             
            
@@ -62,6 +77,11 @@ struct Nothing_X_MacOSApp: App {
             .onChange(of: viewModel.currentDestination) { newDestination in
                 // Handle any additional logic when the destination changes, if needed
             }
+            .frame(width: 250, height: 230)
+            
+            
+
+            
             
         } label: {
             
@@ -75,6 +95,8 @@ struct Nothing_X_MacOSApp: App {
 
         }
         .menuBarExtraStyle(.window)
+        
+        
     
     }
 }

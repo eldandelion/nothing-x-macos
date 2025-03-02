@@ -9,97 +9,100 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var store: Store
-    @EnvironmentObject var viewModel: MainViewViewModel
+//    @EnvironmentObject var viewModel: MainViewViewModel
     
     
 
     
     var body: some View {
-        VStack {
+        ZStack {
+            
             HStack {
-                Spacer(minLength: 10)
-                
-                // ear (1)
                 DeviceNameDotTextView()
+                Spacer()
+            }
+            
+            .zIndex(1)
+       
+
+            VStack(alignment: .center) {
                 
-                VStack {
+                // Settings | Quit
+                HStack {
+                    Spacer()
                     
-                    // Settings | Quit
-                    HStack {
-                        Spacer()
-                        
-                        // Settings
-                        SettingsButtonView()
-                        
-                        // Quit
-                        QuitButtonView()
-                    }
+                    // Settings
+                    SettingsButtonView()
                     
-                    HStack {
-                        VStack {
-                            Spacer()
-                            
-                            //HStack - Equaliser | Controls
-                            HStack(spacing: 5) {
-                                
-                                
-                       
-                                //EQUALISER
-                                NavigationLink("EQUALISER", value: Destination.equalizer)
-                                    .buttonStyle(GreyButton())
-                                    .focusable(false)
-                                
-                                //CONTROLS
-                                NavigationLink("CONTROLS", value: Destination.controls)
-                                    .buttonStyle(GreyButton())
-                                    .focusable(false)
-                                
-                            }
-                            
-                            Spacer()
-                            
-                            // NOISE CONTROL
-                            NoiseControlView(selection: $store.noiseControlSelected)
-                            
-                            Spacer()
-                            
-                            // Battery Indicator
-                            BatteryIndicatorView()
-                            
-                            Spacer()
-                        }
-                        // Compensates for Leading side Spacer + DotTextView
-                        Spacer(minLength: 24)
-                    }
-                    
+                    // Quit
+                    QuitButtonView()
                 }
                 
+                
+                VStack {
+                    Spacer()
+                    
+                    //HStack - Equaliser | Controls
+                    HStack(spacing: 5) {
+                        
+                        
+                        
+                        //EQUALISER
+                        NavigationLink("EQUALISER", value: Destination.equalizer)
+                            .buttonStyle(GreyButton())
+                            .focusable(false)
+                        
+                        //CONTROLS
+                        NavigationLink("CONTROLS", value: Destination.controls)
+                            .buttonStyle(GreyButton())
+                            .focusable(false)
+                        
+                    }
+                    
+                    Spacer()
+                    
+                    // NOISE CONTROL
+                    NoiseControlView(selection: $store.noiseControlSelected)
+                    
+                    Spacer()
+                    
+                    // Battery Indicator
+                    BatteryIndicatorView()
+                    
+                    Spacer()
+                }
+                // Compensates for Leading side Spacer + DotTextView
+                
+                
+                
             }
+                    
         }
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
-//        .clipShape(RoundedRectangle(cornerRadius: 8))
+
         
         
     }
         
 }
 
-//struct HomeView_Previews: PreviewProvider {
-//    static let store = Store()
-//    @State static var currentDestination: Destination? = .home
-//    @ObservedObject var viewModel: MainViewViewModel
-//    // For more advanced EnvironmentObject use in Previews
-//    // https://www.hackingwithswift.com/forums/swiftui/swiftui-preview-and-atenvironmentobject/6844
-//    
-////    static var previews: some View {
-////            // Use a Group to allow for multiple previews if needed
-////            Group {
-////                HomeView(currentDestination: $currentDestination, viewModel: MainViewViewModel()) // Pass the binding
-////                    .environmentObject(store)
-////                    .previewDisplayName("Home View Preview") // Optional: Name the preview
-////            }
-////        }
-//
-//}
+struct HomeView_Previews: PreviewProvider {
+    static let store = Store()
+    @State static var currentDestination: Destination? = .home
+    @ObservedObject var viewModel: MainViewViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl())
+    // For more advanced EnvironmentObject use in Previews
+    // https://www.hackingwithswift.com/forums/swiftui/swiftui-preview-and-atenvironmentobject/6844
+    
+    static var previews: some View {
+            // Use a Group to allow for multiple previews if needed
+            
+                HomeView() // Pass the binding
+                    .environmentObject(store)
+//                    .environmentObject(viewModel)
+                    .previewDisplayName("Home View Preview") // Optional: Name the preview
+            
+        }
+
+}

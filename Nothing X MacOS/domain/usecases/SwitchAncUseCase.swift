@@ -6,3 +6,19 @@
 //
 
 import Foundation
+
+
+class SwitchAncUseCase : SwitchAncUseCaseProtocol {
+    
+    private let service: NothingService
+    
+    init(service: NothingService) {
+        self.service = service
+    }
+    
+    func switchANC(mode: ANC) {
+        service.switchANC(mode: mode)
+    }
+    
+    
+}
