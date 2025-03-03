@@ -10,7 +10,7 @@ import SwiftUI
 struct NoiseControlView<SelectedANC: Hashable>: View {
     
     
-    @StateObject private var viewModel = NoiseControlViewViewModel(nothingService: NothingServiceImpl())
+    @StateObject private var viewModel = NoiseControlViewViewModel(nothingService: NothingServiceImpl.shared)
     
     @Binding var selection: SelectedANC
     

@@ -11,7 +11,7 @@ import SwiftUI
 struct DiscoverView : View {
     
     
-    @StateObject private var viewModel = DiscoverViewViewModel(nothingService: NothingServiceImpl())
+    @StateObject private var viewModel = DiscoverViewViewModel(nothingService: NothingServiceImpl.shared)
     
     var body : some View {
         ZStack {

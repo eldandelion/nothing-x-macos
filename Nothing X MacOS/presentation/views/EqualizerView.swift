@@ -10,7 +10,7 @@ import SwiftUI
 struct EqualizerView: View {
     
     @EnvironmentObject var mainViewModel: MainViewViewModel
-    @ObservedObject var viewModel = EqualizerViewViewModel(nothingService: NothingServiceImpl())
+    @ObservedObject var viewModel = EqualizerViewViewModel(nothingService: NothingServiceImpl.shared)
     
     var body: some View {
         
@@ -101,66 +101,12 @@ struct EqualizerView: View {
 }
 
 
-class MockNothingService : NothingService {
-    func ringBuds() {
-    
-    }
-    
-    func stopRingingBuds() {
-        
-    }
-    
-    func switchANC(mode: ANC) {
-        
-    }
-    
-    func switchEQ(mode: EQProfiles) {
-        
-    }
-    
-    func fetchData() {
-        
-    }
-    
-    func discoverNothing() {
-        
-    }
-    
-    func connectToNothing(device: BluetoothDeviceEntity) {
-        
-        
-    }
-    
-    func isNothingConnected() -> BluetoothDeviceEntity? {
-        return nil
-    }
-    
-    func isNothingConnected() -> Bool {
-        return true
-    }
-    
-    
-}
-
-class MockMainViewModel : ObservableObject {
-    
-    @Published var rightBattery: Double? = nil
-    @Published var leftBattery: Double? = nil
-    
-    @Published var currentDestination: Destination? // Published property for destination
-    @Published var nothingDevice: NothingDeviceEntity?
-    
-    init() {
-        
-    }
-}
-
 struct EqualizerView_Previews: PreviewProvider {
    
-    @ObservedObject var viewModel = EqualizerViewViewModel(nothingService: MockNothingService())
+    @ObservedObject var viewModel = EqualizerViewViewModel(nothingService: NothingServiceImpl.shared)
     static var previews: some View {
         
-        let mainViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: MockNothingService())
+        let mainViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared)
         
         
         

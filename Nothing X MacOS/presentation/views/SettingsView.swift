@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @State private var InEarDetection = true
-    @State private var LowLagMode = true
+    
+    @StateObject private var viewModel = SettingsViewViewModel(nothingService: NothingServiceImpl.shared)
+    
+    @EnvironmentObject private var mainViewModel: MainViewViewModel
     
     var body: some View {
         VStack {
@@ -40,11 +42,21 @@ struct SettingsView: View {
                 
                 VStack(alignment: .center) {
                     // IN-EAR DETECT
-                    Toggle("In-ear detection 􀅴", isOn: $InEarDetection).help(Text("Automatically play audio when earbuds are in and pause when removed"))
-                        
+                    Toggle("In-ear detection 􀅴", isOn: $viewModel.inEarSwitch)
+                        .help(Text("Automatically play audio when earbuds are in and pause when removed"))
+                        .onChange(of: viewModel.inEarSwitch) { newValue in
+                            // Call the function when the toggle changes
+                            viewModel.switchInEarDetection(mode: newValue)
+                        }
+                    
+                    
                     
                     // LOW LAG MODE
-                    Toggle("Low lag mode 􀅴", isOn: $LowLagMode).help(Text("Minimise latency for an improved gaming experience."))
+                    Toggle("Low lag mode 􀅴", isOn: $viewModel.latencySwitch).help(Text("Minimize latency for an improved gaming experience."))
+                        .onChange(of: viewModel.latencySwitch) { newValue in
+                            // Call the function when the toggle changes
+                            viewModel.switchLatency(mode: newValue)
+                        }
                     
                     // Find My Earbuds
                     NavigationLink("FIND MY EARBUDS", value: Destination.findMyBuds)
@@ -53,7 +65,7 @@ struct SettingsView: View {
                 .toggleStyle(SwitchToggleStyle())
                 
                 Spacer()
-
+                
             }
             .frame(width: 200)
             
@@ -62,12 +74,27 @@ struct SettingsView: View {
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
+        .onAppear {
+            if let device = mainViewModel.nothingDevice {
+                print("Settings View latency \(device.isLowLatencyOn)")
+                print("Settings View in ear \(device.isInEarDetectionOn)")
+                viewModel.inEarSwitch = device.isInEarDetectionOn
+                viewModel.latencySwitch = device.isLowLatencyOn
+            }
+        }
         
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
+    
+    @State private var viewModel = SettingsViewViewModel(nothingService: NothingServiceImpl.shared)
+    
     static var previews: some View {
+        
+        let mainViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared)
+        
         SettingsView()
+            .environmentObject(mainViewModel)
     }
 }

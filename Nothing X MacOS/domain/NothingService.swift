@@ -27,4 +27,8 @@ protocol NothingService {
     
     func isNothingConnected() -> Bool
     
+    func switchLowLatency(mode: Bool)
+    
+    func switchInEarDetection(mode: Bool)
+    
 }

@@ -17,6 +17,8 @@ private enum DeviceError: Error {
 // Define a structure to represent a request
 private struct Request {
     let command: Commands
+    let operationID: UInt8
+    let payload: [UInt8]
     let completion: (Result<Void, Error>) -> Void
     let requestTimeout: TimeInterval
     let responseTimeout: TimeInterval
@@ -25,9 +27,11 @@ private struct Request {
 
 class NothingServiceImpl : NothingService {
     
-    private var operationID = 0
+    static let shared = NothingServiceImpl()
+    
     private var cancellables = Set<AnyCancellable>()
     private let bluetoothManager = BluetoothManager.shared
+    private var currentRequest: Request? = nil
     
     private let classOfNothing:UInt32 = 2360324
     // A queue to hold requests
@@ -40,7 +44,7 @@ class NothingServiceImpl : NothingService {
 
     private var nothingDevice: NothingDeviceFDTO? = nil
     
-    init() {
+    private init() {
         
         NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.CONNECTED.rawValue), object: nil, queue: .main) { notification in
             // Handle the notification here
@@ -48,6 +52,7 @@ class NothingServiceImpl : NothingService {
                 
                     
                     self.nothingDevice = NothingDeviceFDTO(bluetoothDetails: device)
+                    print("Nothing Device object has been created \(self.nothingDevice?.name)")
                     
                     NotificationCenter.default.post(name: Notification.Name(DataNotifications.CONNECTED.rawValue), object: self.nothingDevice)
                 
@@ -83,19 +88,56 @@ class NothingServiceImpl : NothingService {
         NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.FOUND.rawValue), object: nil, queue: .main) { notification in
             
            print("Found device")
-            
             if let bluetoothDevice = notification.object as? BluetoothDeviceEntity {
                 
-                
                 NotificationCenter.default.post(name: Notification.Name(DataNotifications.FOUND.rawValue), object: bluetoothDevice, userInfo: nil)
-                
                 
             }
         }
         
+    }
+    
+
+    func switchLowLatency(mode: Bool) {
+        
+        var array: [UInt8] = [0x02, 0x00]
+        if (mode) {
+            array[0] = 0x01
+        }
+        
+        addRequest(command: Commands.GET_LATENCY, operationID: Commands.GET_LATENCY.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: array) {
+            result in
+            switch result {
+            case .success:
+                print("Successfully changed latency settings")
+                self.nothingDevice?.isLowLatencyOn = mode
+            case .failure(let error):
+                print("Failed to change latency settings: \(error.localizedDescription)")
+                
+            }
+        }
         
     }
     
+    func switchInEarDetection(mode: Bool) {
+        var array: [UInt8] = [0x01, 0x01, 0x00]
+        
+        if (mode) {
+            array[2] = 0x01
+        }
+        
+        addRequest(command: Commands.SET_IN_EAR_STATUS, operationID: Commands.SET_IN_EAR_STATUS.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: array) {
+            result in
+            switch result {
+            case .success:
+                print("Successfully switched in ear detection")
+                self.nothingDevice?.isInEarDetectionOn = mode
+            case .failure(let error):
+                print("Failed to fetch eq: \(error.localizedDescription)")
+                
+            }
+        }
+    }
     
     func ringBuds() {
         setRingBuds(right: true, left: true, doRing: true)
@@ -116,44 +158,47 @@ class NothingServiceImpl : NothingService {
         print(byteArray)
         
         // Call the send function with the specified parameters
-        send(command: Commands.SET_ANC.rawValue, payload: byteArray)
         
-        addRequest(command: Commands.GET_ANC, requestTimeout: 1000, responseTimeout: 1000) {
+        
+        addRequest(command: Commands.SET_ANC, operationID: Commands.SET_ANC.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: byteArray) {
             result in
             switch result {
             case .success:
-                print("Successfully fetched eq settings")
+                print("Successfully changed ANC settings")
+                self.nothingDevice?.anc = mode
             case .failure(let error):
-                print("Failed to fetch eq: \(error.localizedDescription)")
+                print("Failed to change ANC settings: \(error.localizedDescription)")
                 
             }
         }
+        
+        
     }
     
     func switchEQ(mode: EQProfiles) {
         var byteArray: [UInt8] = [0x00, 0x00]
         
         byteArray[0] = mode.rawValue
-        
-        send(command: Commands.SET_EQ.rawValue, payload: byteArray)
-        
-        addRequest(command: Commands.GET_EQ, requestTimeout: 1000, responseTimeout: 1000) {
-            result in
-            switch result {
-            case .success:
-                print("Successfully fetched eq settings")
-            case .failure(let error):
-                print("Failed to fetch eq: \(error.localizedDescription)")
-                
-            }
+        if (nothingDevice == nil) {
+            print("The nothing device is nil")
         }
+        
+        
+        addRequest(command: Commands.SET_IN_EAR_STATUS, operationID: Commands.SET_IN_EAR_STATUS.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: byteArray) { result in  // Capture self weakly
+                
+                switch result {
+                case .success:
+                    print("Successfully switched in ear detection")
+                    self.nothingDevice?.listeningMode = mode
+                case .failure(let error):
+                    print("Failed to fetch eq: \(error.localizedDescription)")
+                }
+            }
+        
     }
     
     func connectToNothing(device: BluetoothDeviceEntity) {
-        
-  
         bluetoothManager.connectToDevice(address: device.mac, channelID: device.channelId)
-        
     }
         
     func discoverNothing() {
@@ -195,7 +240,7 @@ class NothingServiceImpl : NothingService {
             print("adding request")
             
             
-            addRequest(command: Commands.GET_SERIAL_NUMBER, requestTimeout: 1000, responseTimeout: 1000) {
+            addRequest(command: Commands.GET_SERIAL_NUMBER, operationID: Commands.GET_SERIAL_NUMBER.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
                 result in
                 switch result {
                 case .success:
@@ -206,7 +251,7 @@ class NothingServiceImpl : NothingService {
                 }
             }
             
-            addRequest(command: Commands.GET_FIRMWARE, requestTimeout: 1000, responseTimeout: 1000) {
+            addRequest(command: Commands.GET_FIRMWARE, operationID: Commands.GET_FIRMWARE.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
                 result in
                 switch result {
                 case .success:
@@ -217,7 +262,7 @@ class NothingServiceImpl : NothingService {
                 }
             }
             
-            addRequest(command: Commands.GET_BATTERY, requestTimeout: 1000, responseTimeout: 1000) {
+            addRequest(command: Commands.GET_BATTERY, operationID: Commands.GET_BATTERY.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
                 result in
                 switch result {
                 case .success:
@@ -228,7 +273,7 @@ class NothingServiceImpl : NothingService {
                 }
             }
             
-            addRequest(command: Commands.GET_ANC, requestTimeout: 1000, responseTimeout: 1000) {
+            addRequest(command: Commands.GET_ANC, operationID: Commands.GET_ANC.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
                 result in
                 switch result {
                 case .success:
@@ -239,11 +284,33 @@ class NothingServiceImpl : NothingService {
                 }
             }
             
-            addRequest(command: Commands.GET_EQ, requestTimeout: 1000, responseTimeout: 1000) {
+            addRequest(command: Commands.GET_EQ, operationID: Commands.GET_EQ.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
                 result in
                 switch result {
                 case .success:
                     print("Successfully fetched eq settings")
+                case .failure(let error):
+                    print("Failed to fetch eq: \(error.localizedDescription)")
+                    
+                }
+            }
+            
+            addRequest(command: Commands.GET_LATENCY, operationID: Commands.GET_LATENCY.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
+                result in
+                switch result {
+                case .success:
+                    print("Successfully fetched latency settings")
+                case .failure(let error):
+                    print("Failed to fetch eq: \(error.localizedDescription)")
+                    
+                }
+            }
+            
+            addRequest(command: Commands.GET_IN_EAR_STATUS, operationID: Commands.GET_IN_EAR_STATUS.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
+                result in
+                switch result {
+                case .success:
+                    print("Successfully fetched in ear status")
                 case .failure(let error):
                     print("Failed to fetch eq: \(error.localizedDescription)")
                     
@@ -257,11 +324,11 @@ class NothingServiceImpl : NothingService {
     
     #warning("low latency mode switch is not implemented")
     
-    private func send(command: UInt16, payload: [UInt8] = []) {
+    private func send(command: UInt16, operationID: UInt8, payload: [UInt8] = []) {
         var header: [UInt8] = [0x55, 0x60, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00]
         
-        operationID += 1
         header[7] = UInt8(operationID)
+        print("OPERATION \(operationID)")
         
         // Convert command to bytes
         let commandBytes = withUnsafeBytes(of: command.bigEndian) { Array($0) }
@@ -299,10 +366,12 @@ class NothingServiceImpl : NothingService {
     
     // Function to process requests in the queue
     private func processNextRequest() {
+        print("Log queue: processing next request")
         queueSemaphore.wait()
         
         // Check if there are requests in the queue
         guard !requestQueue.isEmpty else {
+            print("Log queue: queue is empty")
             isProcessing = false
             queueSemaphore.signal()
             return
@@ -310,6 +379,8 @@ class NothingServiceImpl : NothingService {
         
         // Get the next request from the queue
         var request = requestQueue.removeFirst()
+        currentRequest = request
+        print("Log queue: first request in queue is \(request.operationID)")
         isProcessing = true
         queueSemaphore.signal()
         
@@ -347,16 +418,16 @@ class NothingServiceImpl : NothingService {
         }
         
         // Send the command and handle the response
-        send(command: request.command.rawValue, payload: [])
+        send(command: request.command.rawValue, operationID: request.operationID, payload: request.payload)
     }
     
     // Function to add a request to the queue
-    private func addRequest(command: Commands, requestTimeout: TimeInterval, responseTimeout: TimeInterval, completion: @escaping (Result<Void, Error>) -> Void) {
+    private func addRequest(command: Commands, operationID: UInt8, requestTimeout: TimeInterval, responseTimeout: TimeInterval, payload: [UInt8] = [], completion: @escaping (Result<Void, Error>) -> Void) {
         
         let requestTimeoutInSeconds = TimeInterval(requestTimeout) / 1000.0
         let responseTimeoutInSeconds = TimeInterval(responseTimeout) / 1000.0
         
-        let request = Request(command: command, completion: completion, requestTimeout: requestTimeoutInSeconds, responseTimeout: responseTimeoutInSeconds)
+        let request = Request(command: command, operationID: operationID, payload: payload, completion: completion, requestTimeout: requestTimeoutInSeconds, responseTimeout: responseTimeoutInSeconds)
         
         queueSemaphore.wait()
         requestQueue.append(request) // Append the request to the queue
@@ -505,6 +576,17 @@ class NothingServiceImpl : NothingService {
         return firmwareVersion
     }
     
+    private func readLatencyMode(hexArray: [UInt8]) -> Bool {
+        print("readLatency called")
+        return (hexArray[8] != 0)
+    }
+    
+    private func readInEarDetection(hexArray: [UInt8]) -> Bool {
+        print("readInEar called")
+        return (hexArray[10] != 0)
+    }
+
+    
     private func setRingBuds(right: Bool, left: Bool, doRing: Bool) {
         
         var byteArray: [UInt8] = [0x00] // Initialize the byte array with a single element
@@ -515,7 +597,7 @@ class NothingServiceImpl : NothingService {
         if modelBase == Codenames.ONE {
             // Set the first byte based on the isRing parameter
             byteArray[0] = doRing ? 0x01 : 0x00
-            send(command: 0x02F0, payload: byteArray)
+            send(command: Commands.SET_RING_BUDS.rawValue, operationID: Commands.SET_RING_BUDS.firstEightBits, payload: byteArray)
         } else {
             // If modelBase is not "B181", initialize a larger byte array
             byteArray = [0x00, 0x00]
@@ -523,7 +605,7 @@ class NothingServiceImpl : NothingService {
             byteArray[0] = left ? 0x02 : 0x03
             // Set the second byte based on the isRing parameter
             byteArray[1] = right ? 0x01 : 0x00
-            send(command: 0x02F0, payload: byteArray)
+            send(command: Commands.SET_RING_BUDS.rawValue, operationID: Commands.SET_RING_BUDS.firstEightBits, payload: byteArray)
         }
         
     }
@@ -543,6 +625,9 @@ class NothingServiceImpl : NothingService {
             print("Invalid data: first byte is not 0x55 or data length is less than 10")
             return
         }
+        
+        
+        let executedOperationID = rawData[7]
         
         // Extract the header (first 6 bytes)
         let header = Array(rawData[0..<6])
@@ -568,7 +653,6 @@ class NothingServiceImpl : NothingService {
             
         case Commands.READ_SERIAL_NUMBER.rawValue:
             
-            
             let serial = readSerial(hexPayload: rawData)
             if (!serial.isEmpty) {
                 nothingDevice?.serial = serial
@@ -583,7 +667,6 @@ class NothingServiceImpl : NothingService {
         case Commands.READ_ANC_TWO.rawValue:
             
             readANC(hexArray: rawData)
-        
             
         case Commands.READ_EQ_ONE.rawValue:
             
@@ -608,15 +691,33 @@ class NothingServiceImpl : NothingService {
         case Commands.READ_BATTERY_THREE.rawValue:
             
             readBattery(hexString: rawData)
-  
+            
+        case Commands.READ_LATENCY.rawValue:
+            
+            let latency = readLatencyMode(hexArray: rawData)
+            print("LATENCY \(latency)")
+            nothingDevice?.isLowLatencyOn = latency
+            
+        case Commands.READ_IN_EAR_MODE.rawValue:
+            
+            let inEarMode = readInEarDetection(hexArray: rawData)
+            print("IN EAR MODE \(inEarMode)")
+            nothingDevice?.isInEarDetectionOn = inEarMode
+            
             
         default:
             print("Unhandled command \(command)")
             
         }
         
-        if let currentRequest = self.getCurrentRequest() {
-            currentRequest.completion(.success(()))
+        print(self.getCurrentRequest()?.command ?? "current request is nil")
+        if let currentRequest = currentRequest {
+            
+            print("Current request is \(currentRequest.operationID)")
+            print("Executed request is \(executedOperationID)")
+            if currentRequest.operationID == executedOperationID as UInt8 {
+                currentRequest.completion(.success(()))
+            }
         }
         processNextRequest()
         

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ConnectView: View {
     
-    @StateObject private var viewModel = ConnectViewViewModel(nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl())
+    @StateObject private var viewModel = ConnectViewViewModel(nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared)
     
     var body: some View {
         
