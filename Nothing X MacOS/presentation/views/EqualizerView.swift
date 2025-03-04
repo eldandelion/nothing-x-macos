@@ -105,7 +105,7 @@ struct EqualizerView_Previews: PreviewProvider {
 
         var body: some View {
             EqualizerView(eqMode: $eqMode) // Pass the binding
-                .environmentObject(MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared))
+                .environmentObject(MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared))
                 .previewDisplayName("Equalizer View Preview")
         }
     }

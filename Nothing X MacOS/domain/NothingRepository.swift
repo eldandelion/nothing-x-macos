@@ -17,6 +17,8 @@ protocol NothingRepository {
     func delete(device: NothingDeviceEntity)
     
     func contains(mac: String) -> Bool
+    
+    func delete(mac: String)
 
     
 }

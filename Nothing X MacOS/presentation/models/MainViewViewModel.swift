@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 class MainViewViewModel : ObservableObject {
     
@@ -14,8 +15,10 @@ class MainViewViewModel : ObservableObject {
     private let bluetoothService: BluetoothService
     
     private let fetchDataUseCase: FetchDataUseCaseProtocol
+    private let disconnectDeviceUseCase: DisconnectDeviceUseCaseProtocol
+    private let getSavedDevicesUseCase: GetSavedDevicesUseCaseProtocol
     
-    private let jsonEncoder: JsonEncoder = JsonEncoder(fileName: "configurations")
+    private let jsonEncoder: JsonEncoder = JsonEncoder.shared
     private let nothingRepository: NothingRepository
     
     @Published var rightBattery: Double? = nil
@@ -31,17 +34,24 @@ class MainViewViewModel : ObservableObject {
         self.bluetoothService = bluetoothService
         self.nothingRepository = nothingRepository
         self.fetchDataUseCase = FetchDataUseCase(service: nothingService)
+        self.disconnectDeviceUseCase = DisconnectDeviceUseCase(nothingService: nothingService)
+        self.getSavedDevicesUseCase = GetSavedDevicesUseCase(nothingRepository: nothingRepository)
  
-    
-        
         NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.CLOSED_RFCOMM_CHANNEL.rawValue), object: nil, queue: .main) {
             notification in
-            
-//            self.currentDestination = .connect
-            
+                        
             self.leftBattery = nil
             self.rightBattery = nil
-            self.isDeviceNotConnected = true
+            
+            withAnimation {
+                if self.getSavedDevicesUseCase.getSaved().isEmpty {
+                    print("empty list")
+                    self.areDevicesNotSaved = true
+                } else {
+                    self.isDeviceNotConnected = true
+                }
+            }
+  
         }
         
         NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.OPENED_RFCOMM_CHANNEL.rawValue), object: nil, queue: .main) {
@@ -52,14 +62,13 @@ class MainViewViewModel : ObservableObject {
             self.areDevicesNotSaved = false
         }
         
-        NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.FAILED_TO_CONNECT.rawValue), object: nil, queue: .main) {
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(RepositoryNotifications.CONFIGURATION_DELETED.rawValue), object: nil, queue: .main) {
             notification in
             
+            self.disconnectDeviceUseCase.disconnectDevice()
             
-//            self.isDeviceNotConnected = false
-//            self.areDevicesNotSaved = false
-            //show that it failed to connect
-            
+//            self.areDevicesNotSaved = true
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in

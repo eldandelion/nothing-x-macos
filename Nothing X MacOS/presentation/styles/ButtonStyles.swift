@@ -31,6 +31,18 @@ struct GreyImageButtonCicle: ButtonStyle {
     }
 }
 
+struct GreyButtonLarge: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .padding(4)
+            .frame(width: 210, height: 32)
+            .background(Color(#colorLiteral(red: 0.10980392247438431, green: 0.11372549086809158, blue: 0.12156862765550613, alpha: 1)))
+            .font(.system(size: 10, weight:.light)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
+            .clipShape(Capsule())
+            .textCase(.uppercase)
+    }
+}
+
 
 struct BlackImageButtonCicle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {

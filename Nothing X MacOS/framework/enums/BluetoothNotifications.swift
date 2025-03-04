@@ -21,5 +21,6 @@ enum BluetoothNotifications : String {
     case CONNECTING = "CONNECTING"
     case BLUETOOTH_OFF = "BLUETOOTH OFF"
     case BLUETOOTH_ON = "BLUETOOTH_ON"
+    case DISCONNECTED = "DISCONNECTED"
     
 }

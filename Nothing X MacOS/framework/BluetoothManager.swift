@@ -104,6 +104,8 @@ class BluetoothManager: NSObject, IOBluetoothDeviceInquiryDelegate, IOBluetoothR
         
     }
     
+    
+    
     func connectToDevice(address: String, channelID: UInt8) {
         
         deviceInquiry?.stop()
@@ -186,5 +188,32 @@ class BluetoothManager: NSObject, IOBluetoothDeviceInquiryDelegate, IOBluetoothR
         NotificationCenter.default.post(name: Notification.Name(BluetoothNotifications.CLOSED_RFCOMM_CHANNEL.rawValue), object: nil)
     }
 
+    func disconnectDevice() {
+        if let channel = self.channel {
+            channel.close() // This should trigger rfcommChannelClosed delegate method
+            self.channel = nil // Ensure it's set to nil immediately
+        }
+        
+        // 2. Close the Connection to the Device
+        if let device = self.device, device.isConnected() {
+            device.closeConnection()
+        }
+        self.device = nil // Ensure it's set to nil immediately
+        
+        // 3. Stop Device Inquiry (if running) - important to prevent further connections
+        if let inquiry = self.deviceInquiry {
+            inquiry.stop()
+            self.deviceInquiry = nil
+        }
+        
+        // 4. Clear any stored device information
+        connectedDevice = nil
+        rfcommChannel = nil
+        
+        // 5. Post a Notification (optional, but good practice)
+        NotificationCenter.default.post(name: Notification.Name(BluetoothNotifications.DISCONNECTED.rawValue), object: nil)
+        
+        print("Disconnected from device.")
+    }
 
 }

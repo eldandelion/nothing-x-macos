@@ -11,7 +11,7 @@ import TipKit
 @main
 struct Nothing_X_MacOSApp: App {
     @StateObject var store = Store()
-    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared) // Observe the ViewModel
+    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared) // Observe the ViewModel
     @State private var path = NavigationPath()
     
     

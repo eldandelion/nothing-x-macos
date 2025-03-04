@@ -31,4 +31,6 @@ protocol NothingService {
     
     func switchInEarDetection(mode: Bool)
     
+    func disconnect()
+    
 }

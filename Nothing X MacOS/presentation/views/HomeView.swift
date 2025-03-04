@@ -93,7 +93,7 @@ struct HomeView_Previews: PreviewProvider {
     static let store = Store()
 
     @State static var currentDestination: Destination? = .home
-    @ObservedObject var viewModel: MainViewViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared)
+    @ObservedObject var viewModel: MainViewViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared)
 
     
     static var previews: some View {

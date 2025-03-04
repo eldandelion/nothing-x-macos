@@ -14,7 +14,7 @@ struct ConnectView: View {
     @State var topButtonText: String? = "Retry"
     @State var bottomButtonText: String? = "Cancel"
     
-    @StateObject private var viewModel = ConnectViewViewModel(nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared)
+    @StateObject private var viewModel = ConnectViewViewModel(nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared)
     
     var body: some View {
         

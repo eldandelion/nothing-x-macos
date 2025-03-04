@@ -13,7 +13,9 @@ class JsonEncoder {
     private let fileName: String
     private var devices: [String: NothingDeviceDTO] = [:] // Hashmap for MAC to device entity
     
-    init(fileName: String) {
+    static let shared = JsonEncoder(fileName: "configurations")
+    
+    private init(fileName: String) {
         self.fileName = fileName
         loadDevices()
     }

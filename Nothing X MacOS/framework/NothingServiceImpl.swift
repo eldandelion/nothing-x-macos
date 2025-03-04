@@ -200,6 +200,11 @@ class NothingServiceImpl : NothingService {
     func connectToNothing(device: BluetoothDeviceEntity) {
         bluetoothManager.connectToDevice(address: device.mac, channelID: device.channelId)
     }
+    
+    func disconnect() {
+        bluetoothManager.disconnectDevice()
+        self.nothingDevice = nil
+    }
         
     func discoverNothing() {
         

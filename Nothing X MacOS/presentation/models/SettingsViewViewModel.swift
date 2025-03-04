@@ -11,13 +11,18 @@ class SettingsViewViewModel : ObservableObject {
     
     private let switchLatencyUseCase: SwitchLatencyUseCaseProtocol
     private let switchInEarDetectionUseCase: SwitchInEarDetectionUseCase
+    private let deleteSavedDeviceUseCase: DeleteSavedUseCaseProtocol
     
+    @Published var shouldShowForgetDialog = false
     @Published var latencySwitch = false
     @Published var inEarSwitch = false
     
-    init(nothingService: NothingService) {
+    private var nothingDevice: NothingDeviceEntity?
+    
+    init(nothingService: NothingService, nothingRepository: NothingRepository) {
         self.switchLatencyUseCase = SwitchLatencyUseCase(nothingService: nothingService)
         self.switchInEarDetectionUseCase = SwitchInEarDetectionUseCase(nothingService: nothingService)
+        self.deleteSavedDeviceUseCase = DeleteSavedDeviceUseCase(nothingRepository: nothingRepository)
         
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
             
@@ -27,6 +32,7 @@ class SettingsViewViewModel : ObservableObject {
                 print("Settings View in ear \(device.isInEarDetectionOn)")
                 self.latencySwitch = device.isLowLatencyOn
                 self.inEarSwitch = device.isInEarDetectionOn
+                self.nothingDevice = device
             }
         }
 
@@ -38,6 +44,12 @@ class SettingsViewViewModel : ObservableObject {
     
     func switchInEarDetection(mode: Bool) {
         switchInEarDetectionUseCase.switchInEarDetection(mode: mode)
+    }
+    
+    func forgetDevice() {
+        if let nothingDevice = nothingDevice {
+            deleteSavedDeviceUseCase.delete(device: nothingDevice)
+        }
     }
     
     
