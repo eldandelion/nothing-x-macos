@@ -13,7 +13,10 @@ struct BackButtonView: View {
     var body: some View {
         Button(action: {
             print("Back Button Pressed!")
-            dismiss()
+//            withAnimation {
+                dismiss()
+//            }
+       
         }) {
             Image(systemName: "arrow.backward")
                 

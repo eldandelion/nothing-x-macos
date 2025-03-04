@@ -9,6 +9,11 @@ import SwiftUI
 import TipKit
 struct FindMyBudsView: View {
     
+    @State var title: String? = "Volume warning"
+    @State var text: String? = "Your earbuds may be in use. Be sure to remove them from your ears before you continue. A loud sound will be played which could be uncomfortable for anyone wears them."
+    @State var topButtonText: String? = "Play"
+    @State var bottomButtonText: String? = "Cancel"
+    
     @StateObject private var viewModel = FindMyBudsViewViewModel(nothingService: NothingServiceImpl.shared)
     
     @State private var scale: CGFloat = 1.0 // Initial scale for the first circle
@@ -21,7 +26,12 @@ struct FindMyBudsView: View {
     
     private let popoverTip = HearingLossToolTip()
     var body: some View {
-        ZStack {
+        
+        ZStack(alignment: .bottom) {
+            
+      
+        ZStack(alignment: .center) {
+            
             VStack {
                 HStack {
                     
@@ -39,17 +49,15 @@ struct FindMyBudsView: View {
                 HStack() {
                     VStack(alignment: .leading) {
                         
-                        if true {
+                        if !isRunning {
                             
                             Text("Find my buds")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
-                            
+                                
                             Spacer()
-                            
-                            
                             
                             // Description
                             HStack {
@@ -59,14 +67,19 @@ struct FindMyBudsView: View {
                                     .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
                                     .multilineTextAlignment(.leading)
                                     .padding(.bottom, 12)
+                                    
                                 
                                 Spacer()
                                 
                             }
+                            
+                        } else {
+                            Spacer()
                         }
                     }
                     .padding(.leading, 16)
                     .padding(.trailing, 8)
+                    .padding(.top, 1)
                     Spacer()
                 }
                 
@@ -101,9 +114,7 @@ struct FindMyBudsView: View {
                                         .opacity(secondCircleOpacity) // Opacity effect for the second circle
                                         .onAppear {
                                             // Start the animation for the second circle
-
                                         }
-                                    
                                     
                                     HStack {
                                         Image(systemName: "stop.fill")
@@ -118,56 +129,64 @@ struct FindMyBudsView: View {
                                     .onTapGesture {
                                         
                                         viewModel.stopRingingBuds()
-                                        isRunning = false
+                                        withAnimation {
+                                            isRunning = false
+                                        }
+                                      
                                     }
+                                    
                                 }
                                 .frame(width: 60, height: 60)
-                           
                                 
+                           
                             } else {
-                                if #available(macOS 14.0, *) {
-                                    
-                                    HStack {
-                                        Image(systemName: "play.fill")
-                                            .font(.system(size: 18, weight: .light))
-                                            .aspectRatio(contentMode: .fit) // Maintain aspect ratio
-                                            .foregroundColor(.white)
-                                    }
-                                    .frame(width: 60, height: 60)
-                                    .background(Color(#colorLiteral(red: 0.843137264251709, green: 0.09019608050584793, blue: 0.12941177189350128, alpha: 1)))
-                                    .clipShape(Circle())
-                                    .popoverTip(popoverTip)
-                                    .onTapGesture {
-                                        
-                                        if (!isRunning) {
-                                            isRunning = true
-                                            startAnimation()
-                                        }
-                                        viewModel.ringBuds()
-                                    }
-                                } else {
-                                    HStack {
-                                        Image(systemName: "play.fill")
-                                            .font(.system(size: 18, weight: .light))
-                                            .aspectRatio(contentMode: .fit) // Maintain aspect ratio
-                                            .foregroundColor(.white)
-                                    }
-                                    .frame(width: 60, height: 60)
-                                    .background(Color(#colorLiteral(red: 0.843137264251709, green: 0.09019608050584793, blue: 0.12941177189350128, alpha: 1)))
-                                    .clipShape(Circle())
-                                    .onTapGesture {
-                                        
-                                        if (!isRunning) {
-                                            isRunning = true
-                                            startAnimation()
-                                        }
-                                        viewModel.ringBuds()
+                              
+                                HStack {
+                                    Image(systemName: "play.fill")
+                                        .font(.system(size: 18, weight: .light))
+                                        .aspectRatio(contentMode: .fit) // Maintain aspect ratio
+                                        .foregroundColor(.white)
+                                }
+                                .frame(width: 60, height: 60)
+                                .background(Color(#colorLiteral(red: 0.843137264251709, green: 0.09019608050584793, blue: 0.12941177189350128, alpha: 1)))
+                                .clipShape(Circle())
+                                .onTapGesture {
+                                    withAnimation {
+                                        viewModel.shouldShowWarning = true
                                     }
                                 }
                             }
                         }
                     }
                 }
+                
+            }
+            
+            }
+            if viewModel.shouldShowWarning {
+                Color.black.opacity(0.4) // Background dimming
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        withAnimation {
+                            viewModel.shouldShowWarning = false
+                        }
+                    }
+                    .zIndex(3)
+                
+                ModalSheetView(isPresented: $viewModel.shouldShowWarning, title: $title, text: $text, topButtonText: $topButtonText, bottomButtonText: $bottomButtonText, action: {
+                    
+                    if (!isRunning) {
+                        withAnimation {
+                            isRunning = true
+                        }
+                        startAnimation()
+                    }
+                    viewModel.ringBuds()
+
+                })
+                .animation(.easeInOut, value: viewModel.shouldShowWarning) // Animate the appearance
+                .offset(y: viewModel.shouldShowWarning ? 0 : 180) // Slide in from the bottom
+                .zIndex(4)
             }
         }
         .navigationBarBackButtonHidden(true)

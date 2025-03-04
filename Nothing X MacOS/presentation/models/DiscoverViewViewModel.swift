@@ -56,6 +56,7 @@ class DiscoverViewViewModel : ObservableObject {
                 self.viewState = .failed_to_connect
             
             
+            
         }
 
         

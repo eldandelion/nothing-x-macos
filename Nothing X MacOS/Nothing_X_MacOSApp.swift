@@ -12,76 +12,45 @@ import TipKit
 struct Nothing_X_MacOSApp: App {
     @StateObject var store = Store()
     @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared) // Observe the ViewModel
+    @State private var path = NavigationPath()
     
-
     
     var body: some Scene {
         MenuBarExtra {
-            NavigationStack {
-                // Use the ViewModel's currentDestination for navigation
-                if let destination = viewModel.currentDestination {
-                    switch destination {
-                    case .home:
-                        HomeView()
-                            .navigationDestination(for: Destination.self) { destination in
-                                                   switch(destination) {
-                                                       case .home: HomeView()
-                                                       case .equalizer: EqualizerView()
-                                                       case .controls: ControlsView()
-                                                       case .controlsTripleTap: ControlsDetailView(destination: .controlsTripleTap)
-                                                       case .controlsTapHold: ControlsDetailView(destination: .controlsTapHold)
-                                                       case .settings: SettingsView()
-                                                   case .findMyBuds: FindMyBudsView().task {
-                                                       if #available(macOS 14.0, *) {
-                                                           try? Tips.resetDatastore()
-                                                           try? Tips.configure([.displayFrequency(.immediate)
-                                                                               ])
-                                                       } else {
-                                                           // Fallback on earlier versions
-                                                       }
-                                                   }
-                                                   case .discover: DiscoverView()
-                                                       
-                                                    default: ConnectView()
-                                                           
-                                                           
-                                                       
-                                                   }
-                                               }
-            
-             
-                    case .settings:
-                        SettingsView()
-                    case .connect:
-                        ConnectView()
-                    
-                    case .discover:
-                        DiscoverView()
-                            
-                    default:
-                        DiscoverView()
-                            
+            NavigationStack(path: $path.animation(.default)) {
+        
+                    HomeView()
+                    .navigationDestination(for: Destination.self) { destination in
+                        switch(destination) {
+                        case .home: HomeView()
+                        case .equalizer: EqualizerView(eqMode: $viewModel.eqProfiles)
+                        case .controls: ControlsView()
+                        case .controlsTripleTap: ControlsDetailView(destination: .controlsTripleTap)
+                        case .controlsTapHold: ControlsDetailView(destination: .controlsTapHold)
+                        case .settings: SettingsView()
+                        case .findMyBuds: FindMyBudsView().task {
+                            if #available(macOS 14.0, *) {
+                                try? Tips.resetDatastore()
+                                try? Tips.configure([.displayFrequency(.immediate)
+                                                    ])
+                            }
+                        }
+                        case .discover: DiscoverView()
+                        default: ConnectView()
+                        }
                     }
-                    
-                } else {
-                    // Default view if no destination is set
-                    DiscoverView()
-                        
-                }
-            
-           
+                    .navigationDestination(isPresented: $viewModel.isDeviceNotConnected) {
+                        ConnectView()
+                    }
+                    .navigationDestination(isPresented: $viewModel.areDevicesNotSaved) {
+                        DiscoverView()
+                    }
                 
             }
             .environmentObject(store)
             .environmentObject(viewModel)
-            .onChange(of: viewModel.currentDestination) { newDestination in
-                // Handle any additional logic when the destination changes, if needed
-            }
             .frame(width: 250, height: 230)
-            
-            
-
-            
+        
             
         } label: {
             

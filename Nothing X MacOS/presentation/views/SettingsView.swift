@@ -32,13 +32,15 @@ struct SettingsView: View {
                 HStack {
                     // Heading
                     Text("Device settings")
-                        .font(.system(size: 14, weight: .regular))
+                        .font(.custom("5by7", size: 16))
+                        
                         .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                         .multilineTextAlignment(.center)
                         .textCase(.uppercase)
                     
                     Spacer()
                 }
+                .padding(.vertical, 4)
                 
                 VStack(alignment: .center) {
                     // IN-EAR DETECT

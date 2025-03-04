@@ -4,7 +4,7 @@
 //
 //  Created by Daniel on 2025/2/27.
 //
-
+import SwiftUI
 import Foundation
 
 class ConnectViewViewModel : ObservableObject {
@@ -14,9 +14,13 @@ class ConnectViewViewModel : ObservableObject {
     private let nothingService: NothingService
     
     @Published var isLoading = false
+    @Published var isFailedToConnectPresented = false
+    @Published var retry = false
     
     
     init(nothingRepository: NothingRepository, nothingService: NothingService) {
+        
+        
         
         self.nothingRepository = nothingRepository
         self.nothingService = nothingService
@@ -26,6 +30,32 @@ class ConnectViewViewModel : ObservableObject {
             self.isLoading = false
             
         }
+        
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(BluetoothNotifications.FAILED_TO_CONNECT.rawValue), object: nil, queue: .main) {
+            notification in
+            
+            
+            withAnimation {
+                self.isFailedToConnectPresented = true
+                self.isLoading = false
+            }
+            
+      
+
+        }
+        
+        NotificationCenter.default.addObserver(forName: Notification.Name(Notifications.REQUEST_RETRY.rawValue), object: nil, queue: .main) {
+            notification in
+            
+            self.connect()
+            withAnimation {
+                self.isFailedToConnectPresented = false
+            }
+            
+        }
+        
+  
         
     }
     
@@ -37,5 +67,14 @@ class ConnectViewViewModel : ObservableObject {
         nothingService.connectToNothing(device: devices[0].bluetoothDetails)
     }
     
+    
+    func retryConnect() {
+        connect()
+        retry = false
+        withAnimation {
+            isFailedToConnectPresented = false
+        }
+        
+    }
     
 }

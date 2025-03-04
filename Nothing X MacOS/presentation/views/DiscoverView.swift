@@ -13,6 +13,7 @@ struct DiscoverView : View {
     
     @StateObject private var viewModel = DiscoverViewViewModel(nothingService: NothingServiceImpl.shared)
     
+    
     var body : some View {
         ZStack {
             
@@ -44,7 +45,7 @@ struct DiscoverView : View {
                         if viewModel.viewState == .discovering {
                             
                             Text("Looking for device")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
@@ -63,7 +64,7 @@ struct DiscoverView : View {
                             
                         } else if viewModel.viewState == .not_discovering {
                             Text("Add new device")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
@@ -80,7 +81,7 @@ struct DiscoverView : View {
                             
                         } else if viewModel.viewState == .found {
                             Text("Found device")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
@@ -88,7 +89,7 @@ struct DiscoverView : View {
                             Spacer()
                         } else if viewModel.viewState == .connecting {
                             Text("Connecting")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
@@ -96,7 +97,7 @@ struct DiscoverView : View {
                             Spacer()
                         } else if viewModel.viewState == .not_found {
                             Text("Not found")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
@@ -112,7 +113,7 @@ struct DiscoverView : View {
                                 .padding(.bottom, 12)
                         } else if viewModel.viewState == .failed_to_connect {
                             Text("Failed to connect")
-                                .font(.system(size: 14, weight: .regular))
+                                .font(.custom("5by7", size: 16))
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)

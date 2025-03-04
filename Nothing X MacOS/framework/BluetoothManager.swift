@@ -182,6 +182,7 @@ class BluetoothManager: NSObject, IOBluetoothDeviceInquiryDelegate, IOBluetoothR
     func rfcommChannelClosed(_ channel: IOBluetoothRFCOMMChannel) {
         print("RFCOMM channel closed.")
         self.device = nil
+        self.channel = nil
         NotificationCenter.default.post(name: Notification.Name(BluetoothNotifications.CLOSED_RFCOMM_CHANNEL.rawValue), object: nil)
     }
 

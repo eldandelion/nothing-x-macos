@@ -12,8 +12,6 @@ struct HomeView: View {
 //    @EnvironmentObject var viewModel: MainViewViewModel
     
     
-
-    
     var body: some View {
         ZStack {
             
@@ -48,10 +46,14 @@ struct HomeView: View {
                         
                         
                         //EQUALISER
-                        NavigationLink("EQUALISER", value: Destination.equalizer)
-                            .buttonStyle(GreyButton())
-                            .focusable(false)
                         
+                       
+                        
+                        NavigationLink("EQUALISER", value: Destination.equalizer)
+                                .buttonStyle(GreyButton())
+                                .focusable(false)
+                                
+                            
                         //CONTROLS
                         NavigationLink("CONTROLS", value: Destination.controls)
                             .buttonStyle(GreyButton())
@@ -81,24 +83,23 @@ struct HomeView: View {
         .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
-
-        
-        
+        .navigationBarBackButtonHidden(true)
+    
     }
         
 }
 
 struct HomeView_Previews: PreviewProvider {
     static let store = Store()
+
     @State static var currentDestination: Destination? = .home
     @ObservedObject var viewModel: MainViewViewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl(), nothingService: NothingServiceImpl.shared)
-    // For more advanced EnvironmentObject use in Previews
-    // https://www.hackingwithswift.com/forums/swiftui/swiftui-preview-and-atenvironmentobject/6844
+
     
     static var previews: some View {
             // Use a Group to allow for multiple previews if needed
-            
-                HomeView() // Pass the binding
+        
+        HomeView() // Pass the binding
                     .environmentObject(store)
 //                    .environmentObject(viewModel)
                     .previewDisplayName("Home View Preview") // Optional: Name the preview

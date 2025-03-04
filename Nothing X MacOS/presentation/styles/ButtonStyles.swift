@@ -55,10 +55,22 @@ struct OffWhiteConnectButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .padding(4)
-            .frame(width: 120, height: 30)
+            .frame(width: 210, height: 32)
             .background(Color(#colorLiteral(red: 0.7568627595901489, green: 0.7607843279838562, blue: 0.7686274647712708, alpha: 1)))
             .font(.system(size: 10, weight:.regular)).foregroundColor(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8)))
             .clipShape(Capsule())
+            .textCase(.uppercase)
+    }
+}
+
+struct TransparentButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .buttonStyle(PlainButtonStyle())
+            
+            .font(.system(size: 10, weight:.regular)).foregroundColor(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
+            .clipShape(Capsule())
+            .textCase(.uppercase)
     }
 }
 
@@ -102,6 +114,9 @@ struct ANCButton: ButtonStyle {
                 .background(Color(#colorLiteral(red: 0.7568627595901489, green: 0.7607843279838562, blue: 0.7686274647712708, alpha: 1)))
                 .font(.system(size: 14, weight:.regular)).foregroundColor(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8)))
                 .clipShape(Capsule())
+//                .animation(.easeInOut, value: configuration.isPressed)
+//                .offset(x: CGFloat(selectedIndex) * (buttonWidth + 5)) // Adjust offset based on selected index
+                .animation(.easeInOut(duration: 0.3), value: configuration.isPressed)
         }
         else {
             configuration.label
@@ -111,6 +126,7 @@ struct ANCButton: ButtonStyle {
             
                 .font(.system(size: 14, weight:.regular)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                 .clipShape(Capsule())
+                .animation(.easeInOut, value: configuration.isPressed)
         }
     }
 }
@@ -141,3 +157,6 @@ struct ControlTapButton: ButtonStyle {
             .cornerRadius(10)
     }
 }
+
+
+

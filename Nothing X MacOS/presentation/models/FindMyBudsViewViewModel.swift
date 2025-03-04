@@ -11,6 +11,7 @@ class FindMyBudsViewViewModel : ObservableObject {
     
     private let ringBudsUseCase: RingBudsUseCaseProtocol
     private let stopRingingBudsUseCase: StopRingingBudsUseCaseProtocol
+    @Published var shouldShowWarning = false
     
     @Published var isRinging = false
     
@@ -22,6 +23,7 @@ class FindMyBudsViewViewModel : ObservableObject {
     
     func ringBuds() {
         isRinging = true
+        shouldShowWarning = false
         ringBudsUseCase.ringBuds()
     }
     
