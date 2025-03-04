@@ -41,9 +41,12 @@ struct Nothing_X_MacOSApp: App {
                     }
                     .navigationDestination(isPresented: $viewModel.isDeviceNotConnected) {
                         ConnectView()
+                            .transition(.asymmetric(insertion: .opacity, removal: .opacity))
+                            
                     }
                     .navigationDestination(isPresented: $viewModel.areDevicesNotSaved) {
                         DiscoverView()
+                            .transition(.asymmetric(insertion: .opacity, removal: .opacity))
                     }
                 
             }
@@ -65,7 +68,5 @@ struct Nothing_X_MacOSApp: App {
         }
         .menuBarExtraStyle(.window)
         
-        
-    
     }
 }
