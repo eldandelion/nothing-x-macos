@@ -20,9 +20,6 @@ struct ControlsView: View {
                 
                 Spacer()
                 
-                // Settings
-                SettingsButtonView()
-                
                 // Quit
                 QuitButtonView()
             }

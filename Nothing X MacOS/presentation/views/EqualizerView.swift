@@ -24,9 +24,6 @@ struct EqualizerView: View {
                 
                 Spacer()
                 
-                // Settings
-                SettingsButtonView()
-                
                 // Quit
                 QuitButtonView()
             }
