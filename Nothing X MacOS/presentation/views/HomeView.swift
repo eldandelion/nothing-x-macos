@@ -49,22 +49,45 @@ struct HomeView: View {
                         
                        
                         
-                        NavigationLink("EQUALISER", value: Destination.equalizer)
+                        if #available(macOS 14.0, *) {
+                            NavigationLink("EQUALISER", value: Destination.equalizer)
+                                .buttonStyle(GreyButton())
+                                .focusable(false)
+                                .focusEffectDisabled()
+                        } else {
+                            NavigationLink("EQUALISER", value: Destination.equalizer)
                                 .buttonStyle(GreyButton())
                                 .focusable(false)
                                 
+                        }
+                                
                             
                         //CONTROLS
-                        NavigationLink("CONTROLS", value: Destination.controls)
-                            .buttonStyle(GreyButton())
-                            .focusable(false)
+                        if #available(macOS 14.0, *) {
+                            NavigationLink("CONTROLS", value: Destination.controls)
+                                .buttonStyle(GreyButton())
+                                .focusable(false)
+                                .focusEffectDisabled()
+                        } else {
+                            NavigationLink("CONTROLS", value: Destination.controls)
+                                .buttonStyle(GreyButton())
+                                .focusable(false)
+                                
+                        }
                         
                     }
                     
                     Spacer()
                     
                     // NOISE CONTROL
-                    NoiseControlView(selection: $store.noiseControlSelected)
+                    if #available(macOS 14.0, *) {
+                        NoiseControlView(selection: $store.noiseControlSelected)
+                            .focusable(false)
+                            .focusEffectDisabled()
+                    } else {
+                        NoiseControlView(selection: $store.noiseControlSelected)
+                            .focusable(false)
+                    }
                     
                     Spacer()
                     

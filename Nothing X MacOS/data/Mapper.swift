@@ -14,7 +14,7 @@ extension NothingDeviceDTO {
             name: self.name,
             serial: self.serial,
             codename: self.codename,
-            firmware: "nil",
+            firmware: self.firmware,
             sku: self.sku,
             leftBattery: 0,
             rightBattery: 0,
@@ -41,7 +41,8 @@ extension NothingDeviceEntity {
             serial: self.serial,
             codename: self.codename,
             sku: self.sku,
-            bluetoothDetails: self.bluetoothDetails.toDTO() // Assuming a similar mapping exists for BluetoothDeviceEntity
+            bluetoothDetails: self.bluetoothDetails.toDTO(),
+            firmware: self.firmware
         )
     }
 }

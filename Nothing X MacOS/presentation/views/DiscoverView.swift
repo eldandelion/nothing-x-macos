@@ -27,7 +27,7 @@ struct DiscoverView : View {
                
                     Spacer()
                     
-                    SettingsButtonView()
+                    
                     // Quit
                     QuitButtonView()
                     

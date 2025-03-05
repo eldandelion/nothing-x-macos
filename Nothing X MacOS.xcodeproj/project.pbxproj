@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		65715E482D76E5FE001F3E36 /* exportOptions.plist in Resources */ = {isa = PBXBuildFile; fileRef = 65715E472D76E5FE001F3E36 /* exportOptions.plist */; };
 		D60A9B092992693300749EB6 /* 5by7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D60A9B082992693300749EB6 /* 5by7.ttf */; };
 		D60A9B0A2992693300749EB6 /* 5by7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D60A9B082992693300749EB6 /* 5by7.ttf */; };
 		D60A9B0B2992693300749EB6 /* 5by7.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D60A9B082992693300749EB6 /* 5by7.ttf */; };
@@ -41,6 +42,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		65715E472D76E5FE001F3E36 /* exportOptions.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = exportOptions.plist; sourceTree = "<group>"; };
 		D60A9B082992693300749EB6 /* 5by7.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = 5by7.ttf; sourceTree = "<group>"; };
 		D60C145A29697E7B003E10D4 /* Nothing X MacOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Nothing X MacOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D60C145D29697E7B003E10D4 /* Nothing_X_MacOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Nothing_X_MacOSApp.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				D60C146129697E7C003E10D4 /* Assets.xcassets */,
 				D60C146629697E7C003E10D4 /* Nothing_X_MacOS.entitlements */,
 				D60C146329697E7C003E10D4 /* Preview Content */,
+				65715E472D76E5FE001F3E36 /* exportOptions.plist */,
 			);
 			path = "Nothing X MacOS";
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6AEF340299BE69800FB5DBC /* ear_1_2x.png in Resources */,
+				65715E482D76E5FE001F3E36 /* exportOptions.plist in Resources */,
 				D65CE68329AA954700B5B84E /* nothing-ear-1.svg in Resources */,
 				D6AEF341299BE69800FB5DBC /* ear_1_4x.png in Resources */,
 				D6AEF342299BE69800FB5DBC /* ear_1.png in Resources */,

@@ -25,9 +25,9 @@ class MainViewViewModel : ObservableObject {
     @Published var leftBattery: Double? = nil
     
     @Published var nothingDevice: NothingDeviceEntity?
-    @Published var isDeviceNotConnected: Bool = true
-    @Published var areDevicesNotSaved: Bool = false
+
     @Published var eqProfiles: EQProfiles = .BALANCED
+    @Published var navigationPath = NavigationPath()
     
     init(bluetoothService: BluetoothService, nothingRepository: NothingRepository, nothingService: NothingService) {
         
@@ -45,10 +45,9 @@ class MainViewViewModel : ObservableObject {
             
             withAnimation {
                 if self.getSavedDevicesUseCase.getSaved().isEmpty {
-                    print("empty list")
-                    self.areDevicesNotSaved = true
+                    self.navigationPath.append(Destination.discover)
                 } else {
-                    self.isDeviceNotConnected = true
+                    self.navigationPath.append(Destination.connect)
                 }
             }
   
@@ -58,8 +57,7 @@ class MainViewViewModel : ObservableObject {
             notification in
             
             self.fetchDataUseCase.fetchData()
-            self.isDeviceNotConnected = false
-            self.areDevicesNotSaved = false
+            self.navigationPath.append(Destination.home)
         }
         
         
@@ -68,7 +66,7 @@ class MainViewViewModel : ObservableObject {
             
             self.disconnectDeviceUseCase.disconnectDevice()
             
-//            self.areDevicesNotSaved = true
+            self.navigationPath.append(Destination.discover)
         }
 
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
@@ -89,13 +87,13 @@ class MainViewViewModel : ObservableObject {
         }
         
     
-        
-        
         // Check Bluetooth status and set the destination accordingly
         if !bluetoothService.isBluetoothOn() || !bluetoothService.isDeviceConnected() {
             let devices = nothingRepository.getSaved()
             if (devices.isEmpty) {
-                areDevicesNotSaved = true
+                navigationPath.append(Destination.discover)
+            } else {
+                navigationPath.append(Destination.connect)
             }
         }
         

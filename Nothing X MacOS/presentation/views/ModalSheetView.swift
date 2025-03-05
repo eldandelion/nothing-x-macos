@@ -77,10 +77,44 @@ struct ModalSheetView : View {
             .background(Color(.modalSheet))
 //            .cornerRadius(.leading)
             .shadow(radius: 10)
+            .clipShape(TopRoundedRectangle(radius: 18))
             
             .transition(.move(edge: .bottom)) // Transition effect
             
         }
+}
+
+struct TopRoundedRectangle: Shape {
+    var radius: CGFloat
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+
+        // Start at the top left corner
+        path.move(to: CGPoint(x: rect.minX, y: rect.minY + radius))
+        // Draw the top left corner
+        path.addArc(center: CGPoint(x: rect.minX + radius, y: rect.minY + radius),
+                     radius: radius,
+                     startAngle: .degrees(180),
+                     endAngle: .degrees(270),
+                     clockwise: false)
+        // Draw the top edge
+        path.addLine(to: CGPoint(x: rect.maxX - radius, y: rect.minY))
+        // Draw the top right corner
+        path.addArc(center: CGPoint(x: rect.maxX - radius, y: rect.minY + radius),
+                     radius: radius,
+                     startAngle: .degrees(270),
+                     endAngle: .degrees(0),
+                     clockwise: false)
+        // Draw the right edge
+        path.addLine(to: CGPoint(x: rect.maxX, y: rect.maxY))
+        // Draw the bottom edge
+        path.addLine(to: CGPoint(x: rect.minX, y: rect.maxY))
+        // Close the path
+        path.closeSubpath()
+
+        return path
+    }
 }
 
 

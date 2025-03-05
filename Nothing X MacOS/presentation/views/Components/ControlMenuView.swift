@@ -30,7 +30,7 @@ struct ControlMenuView: View {
                     
                     Image(systemName: "arrow.right")
                         .foregroundColor(.white)
-                        .padding(.trailing, 6)
+                        
                 }
             }
             .frame(width: 180, height: 42)
@@ -61,7 +61,7 @@ struct ControlMenuView: View {
                     
                     Image(systemName: "arrow.right")
                         .foregroundColor(.white)
-                        .padding(.trailing, 6)
+                        
                 }
             }
             .frame(width: 180, height: 58)

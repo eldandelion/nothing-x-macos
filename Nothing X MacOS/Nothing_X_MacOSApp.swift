@@ -11,44 +11,32 @@ import TipKit
 @main
 struct Nothing_X_MacOSApp: App {
     @StateObject var store = Store()
-    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared) // Observe the ViewModel
-    @State private var path = NavigationPath()
+    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared) 
     
-    
+
     var body: some Scene {
         MenuBarExtra {
-            NavigationStack(path: $path.animation(.default)) {
-        
-                    HomeView()
+            NavigationStack(path: $viewModel.navigationPath.animation(.default)) {
+                
+                HomeView()
                     .navigationDestination(for: Destination.self) { destination in
                         switch(destination) {
                         case .home: HomeView()
+                                .transition(.asymmetric(insertion: .opacity, removal: .opacity))
                         case .equalizer: EqualizerView(eqMode: $viewModel.eqProfiles)
                         case .controls: ControlsView()
                         case .controlsTripleTap: ControlsDetailView(destination: .controlsTripleTap)
                         case .controlsTapHold: ControlsDetailView(destination: .controlsTapHold)
                         case .settings: SettingsView()
-                        case .findMyBuds: FindMyBudsView().task {
-                            if #available(macOS 14.0, *) {
-                                try? Tips.resetDatastore()
-                                try? Tips.configure([.displayFrequency(.immediate)
-                                                    ])
-                            }
-                        }
+                        case .findMyBuds: FindMyBudsView()
                         case .discover: DiscoverView()
-                        default: ConnectView()
+                                .transition(.asymmetric(insertion: .opacity, removal: .opacity))
+                        case .connect: ConnectView()
+                                .animation(nil)
+                            //  .transition(.asymmetric(insertion: .opacity, removal: .opacity))
+                            
                         }
                     }
-                    .navigationDestination(isPresented: $viewModel.isDeviceNotConnected) {
-                        ConnectView()
-                            .transition(.asymmetric(insertion: .opacity, removal: .opacity))
-                            
-                    }
-                    .navigationDestination(isPresented: $viewModel.areDevicesNotSaved) {
-                        DiscoverView()
-                            .transition(.asymmetric(insertion: .opacity, removal: .opacity))
-                    }
-                
             }
             .environmentObject(store)
             .environmentObject(viewModel)

@@ -14,6 +14,7 @@ struct SettingsView: View {
     @State var topButtonText: String? = "Forget"
     @State var bottomButtonText: String? = "Cancel"
     
+    
     @StateObject private var viewModel = SettingsViewViewModel(nothingService: NothingServiceImpl.shared, nothingRepository: NothingRepositoryImpl.shared)
     
     @EnvironmentObject private var mainViewModel: MainViewViewModel
@@ -52,25 +53,127 @@ struct SettingsView: View {
                         }
                         .padding(.vertical, 4)
                         
-                        VStack(alignment: .center) {
-                            // IN-EAR DETECT
-                            Toggle("In-ear detection 􀅴", isOn: $viewModel.inEarSwitch)
-                                .help(Text("Automatically play audio when earbuds are in and pause when removed"))
-                                .onChange(of: viewModel.inEarSwitch) { newValue in
-                                    // Call the function when the toggle changes
-                                    viewModel.switchInEarDetection(mode: newValue)
-                                }
+                        VStack(alignment: .leading) {
+                        
+                        if viewModel.isNothingDeviceAccessible {
                             
-                            // LOW LAG MODE
-                            Toggle("Low lag mode 􀅴", isOn: $viewModel.latencySwitch).help(Text("Minimize latency for an improved gaming experience."))
-                                .onChange(of: viewModel.latencySwitch) { newValue in
-                                    // Call the function when the toggle changes
-                                    viewModel.switchLatency(mode: newValue)
+                     
+                                Text("Advanced features")
+                                    .font(.system(size: 10, weight: .medium))
+                                    .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                    .textCase(.uppercase)
+                                    .padding(.top, 16)
+                                // IN-EAR DETECT
+                                
+                                VStack(alignment: .leading) {
+                                    Toggle("In-ear detection", isOn: $viewModel.inEarSwitch)
+                                        .onChange(of: viewModel.inEarSwitch) { newValue in
+                                            // Call the function when the toggle changes
+                                            viewModel.switchInEarDetection(mode: newValue)
+                                        }
+                                    
+                                    Text("Automatically play audio when earbuds are in and pause when removed.")
+                                        .font(.system(size: 10, weight: .light))
+                                        .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                        .padding(.trailing, 64)
                                 }
+                                .padding(.vertical, 6)
+                                
+                                VStack(alignment: .leading) {
+                                    Toggle("Low lag mode", isOn: $viewModel.latencySwitch)
+                                        .onChange(of: viewModel.latencySwitch) { newValue in
+                                            // Call the function when the toggle changes
+                                            viewModel.switchLatency(mode: newValue)
+                                        }
+                                    
+                                    Text("Minimize latency for an improved gaming experience.")
+                                        .font(.system(size: 10, weight: .light))
+                                        .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                        .padding(.trailing, 64)
+                                }
+                                .padding(.vertical, 6)
+                                
+                                
+                                // LOW LAG MODE
+                                
+                                
+                                // Find My Earbuds
+                                NavigationLink("FIND MY EARBUDS", value: Destination.findMyBuds)
+                                    .buttonStyle(FindMyTransparentButton())
+                                    .padding(.bottom, 8)
+                                
+                                Rectangle()
+                                    .fill(Color(#colorLiteral(red: 0.07009194046, green: 0.07611755282, blue: 0.08425947279, alpha: 1))) // Set the color of the line
+                                    .frame(height: 0.8)
+                            }
                             
-                            // Find My Earbuds
-                            NavigationLink("FIND MY EARBUDS", value: Destination.findMyBuds)
-                                .buttonStyle(FindMyTransparentButton())
+                            Text("Device details")
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                .textCase(.uppercase)
+                                .padding(.top, 8)
+                                
+                            
+                            VStack(alignment: .leading) {
+                                Text("Device name")
+                                    .font(.system(size: 10, weight: .light))
+                                    .textCase(.uppercase)
+                                    .padding(.bottom, 1)
+                                    .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
+                                    
+                                
+                                Text(viewModel.name)
+                                    .font(.system(size: 10, weight: .light))
+                                    .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                    
+                            }
+                            .padding(.top, 8)
+                            .padding(.vertical, 6)
+                            
+                            VStack(alignment: .leading) {
+                                Text("Bluetooth address")
+                                    .font(.system(size: 10, weight: .light))
+                                    .textCase(.uppercase)
+                                    .padding(.bottom, 1)
+                                    .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
+                                
+                                Text(viewModel.mac)
+                                    .font(.system(size: 10, weight: .light))
+                                    .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                    .textCase(.uppercase)
+                                    
+                            }
+                            .padding(.vertical, 6)
+                            
+                            VStack(alignment: .leading) {
+                                Text("Serial number")
+                                    .font(.system(size: 10, weight: .light))
+                                    .textCase(.uppercase)
+                                    .padding(.bottom, 1)
+                                    .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
+                                
+                                Text(viewModel.serial)
+                                    .font(.system(size: 10, weight: .light))
+                                    .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                    
+                            }
+                            .padding(.vertical, 6)
+                            
+                            VStack(alignment: .leading) {
+                                Text("Firmware version")
+                                    .font(.system(size: 10, weight: .light))
+                                    .textCase(.uppercase)
+                                    .padding(.bottom, 1)
+                                    .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
+                                
+                                Text(viewModel.firmware)
+                                    .font(.system(size: 10, weight: .light))
+                                    .foregroundColor(Color(#colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)))
+                                    
+                            }
+                            .padding(.vertical, 6)
+                           
+                                
                         }
                         .toggleStyle(SwitchToggleStyle())
                         

@@ -15,13 +15,15 @@ class NothingDeviceDTO : Codable {
     let codename: Codenames
     let sku: SKU
     let bluetoothDetails: BluetoothDeviceDTO
+    let firmware: String
     
-    init(name: String, serial: String, codename: Codenames, sku: SKU, bluetoothDetails: BluetoothDeviceDTO) {
+    init(name: String, serial: String, codename: Codenames, sku: SKU, bluetoothDetails: BluetoothDeviceDTO, firmware: String) {
         self.name = name
         self.serial = serial
         self.codename = codename
         self.sku = sku
         self.bluetoothDetails = bluetoothDetails
+        self.firmware = firmware
     }
     
     
