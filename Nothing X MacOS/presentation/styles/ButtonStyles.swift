@@ -123,22 +123,23 @@ struct ANCButton: ButtonStyle {
             configuration.label
                 .padding(4)
                 .frame(width: 56, height: 34)
-                .background(Color(#colorLiteral(red: 0.7568627595901489, green: 0.7607843279838562, blue: 0.7686274647712708, alpha: 1)))
+//                .background(Color.clear)
+//                .background(Color(#colorLiteral(red: 0.10980392247438431, green: 0.11372549086809158, blue: 0.12156862765550613, alpha: 1)))
+                .background(Color(red: 1, green: 1, blue: 1, opacity: 0.001))
                 .font(.system(size: 14, weight:.regular)).foregroundColor(Color(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.8)))
                 .clipShape(Capsule())
-//                .animation(.easeInOut, value: configuration.isPressed)
-//                .offset(x: CGFloat(selectedIndex) * (buttonWidth + 5)) // Adjust offset based on selected index
-                .animation(.easeInOut(duration: 0.3), value: configuration.isPressed)
+                .animation(.easeInOut(duration: 0.1))
         }
         else {
             configuration.label
                 .padding(4)
                 .frame(width: 56, height: 34)
-                .background(Color(#colorLiteral(red: 0.10980392247438431, green: 0.11372549086809158, blue: 0.12156862765550613, alpha: 1)))
-            
+//                .background(Color(#colorLiteral(red: 0.10980392247438431, green: 0.11372549086809158, blue: 0.12156862765550613, alpha: 1)))
+                .background(Color(red: 1, green: 1, blue: 1, opacity: 0.001))
+//                .background(Color.clear)
                 .font(.system(size: 14, weight:.regular)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                 .clipShape(Capsule())
-                .animation(.easeInOut, value: configuration.isPressed)
+//                .animation(.easeInOut(duration: 0.1))
         }
     }
 }
@@ -168,7 +169,49 @@ struct ControlTapButton: ButtonStyle {
             .padding(.leading, 6)
             .background(Color(#colorLiteral(red: 0.10980392247438431, green: 0.11372549086809158, blue: 0.12156862765550613, alpha: 1)))
             .font(.system(size: 10, weight:.light)).foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)))
-            .cornerRadius(10)
+            .cornerRadius(6)
+    }
+}
+
+struct NoTintButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(Color.clear)
+    }
+}
+// Define a custom button style
+struct BudsPickerButton: ButtonStyle {
+    @Binding var isDarkened: Bool
+    @Binding var scale: CGFloat
+    @Binding var offset: CGFloat
+    var imageName: String
+    var imageNameDarken: String
+
+    func makeBody(configuration: Configuration) -> some View {
+        ZStack {
+            // Image view
+            if #available(macOS 14.0, *) {
+                Image(isDarkened ? imageNameDarken : imageName) // Use the name of your image asset
+                    .resizable() // Make the image resizable
+                    .scaledToFit() // Maintain the aspect ratio
+                    .frame(width: 60, height: 100) // Set the desired size
+                
+                    .focusable(false)
+                    .padding(2)
+                    .scaleEffect(scale)
+                    .focusEffectDisabled()
+                    .offset(x: offset, y: 0)
+
+            } else {
+                Image(isDarkened ? imageNameDarken : imageName) // Use the name of your image asset
+                    .resizable() // Make the image resizable
+                    .scaledToFit() // Maintain the aspect ratio
+                    .frame(width: 60, height: 100) // Set the desired size
+                //                                .padding()  Add padding around the image
+                    .focusable(false)
+            }
+        }
+        .buttonStyle(NoTintButtonStyle()) // Use plain button style to avoid default styling
     }
 }
 

@@ -23,9 +23,7 @@ struct EqualizerView: View {
                 BackButtonView()
                 
                 Spacer()
-                
-                // Quit
-                QuitButtonView()
+      
             }
             
             VStack(alignment: .center) {
@@ -88,7 +86,6 @@ struct EqualizerView: View {
     
         }
         .navigationBarBackButtonHidden(true)
-        .padding(4)
         .background(.black)
         .frame(width: 250, height: 230)
        

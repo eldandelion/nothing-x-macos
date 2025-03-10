@@ -74,6 +74,21 @@ class NothingDeviceFDTO: ObservableObject {
         didSet { notifyDataUpdated() }
     }
     
+    @Published var tripleTapGestureActionLeft: TripleTapGestureActions = .NO_EXTRA_ACTION {
+        didSet { notifyDataUpdated() }
+    }
+    
+    @Published var tripleTapGestureActionRight: TripleTapGestureActions = .NO_EXTRA_ACTION {
+        didSet { notifyDataUpdated() }
+    }
+    
+    @Published var tapAndHoldGestureActionLeft: TapAndHoldGestureActions = .NO_EXTRA_ACTION {
+        didSet { notifyDataUpdated() }
+    }
+    @Published var tapAndHoldGestureActionRight: TapAndHoldGestureActions = .NO_EXTRA_ACTION {
+        didSet { notifyDataUpdated() }
+    }
+     
     init(bluetoothDetails: BluetoothDeviceEntity) {
         self.bluetoothDetails = bluetoothDetails
     }

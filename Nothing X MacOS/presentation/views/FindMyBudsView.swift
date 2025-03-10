@@ -32,7 +32,7 @@ struct FindMyBudsView: View {
       
         ZStack(alignment: .center) {
             
-            VStack {
+            VStack(spacing: 0) {
                 HStack {
                     
                     BackButtonView()
@@ -41,9 +41,6 @@ struct FindMyBudsView: View {
                     QuitButtonView()
                     
                 }
-                .padding(.top, 4)
-                .padding(.leading, 4)
-                .padding(.trailing, 4)
                 
                 // Heading
                 HStack() {
@@ -56,6 +53,7 @@ struct FindMyBudsView: View {
                                 .foregroundColor(Color(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 0.8)))
                                 .multilineTextAlignment(.leading)
                                 .textCase(.uppercase)
+                                .padding(.vertical, 6)
                                 
                             Spacer()
                             
@@ -183,7 +181,7 @@ struct FindMyBudsView: View {
                     }
                     viewModel.ringBuds()
 
-                })
+                }, onCancelAction: {})
                 .animation(.easeInOut, value: viewModel.shouldShowWarning) // Animate the appearance
                 .offset(y: viewModel.shouldShowWarning ? 0 : 180) // Slide in from the bottom
                 .zIndex(4)

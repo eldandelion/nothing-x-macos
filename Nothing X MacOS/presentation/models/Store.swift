@@ -58,7 +58,7 @@ class Store: ObservableObject {
     // [left, right]
     @Published var selectedTripleTapOp: [TripleTapOptions] = [TripleTapOptions.skip_forward, TripleTapOptions.skip_forward]
     @Published var selectedtapAndHoldOp: [TapAndHoldOptions] = [TapAndHoldOptions.noise_control, TapAndHoldOptions.noise_control]
-    @Published var fixedtapAndHoldOp = "decline incoming call"
+    @Published var fixedtapAndHoldOp = "Decline incoming call"
     
     @Published var earBudSelectedSide = EarBudSide.left.rawValue
     

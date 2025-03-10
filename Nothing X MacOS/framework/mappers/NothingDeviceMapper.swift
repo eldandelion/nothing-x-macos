@@ -30,7 +30,11 @@ extension NothingDeviceFDTO {
             listeningMode: framework.listeningMode,
             isLowLatencyOn: framework.isLowLatencyOn,
             isInEarDetectionOn: framework.isInEarDetectionOn,
-            bluetoothDetails: framework.bluetoothDetails
+            bluetoothDetails: framework.bluetoothDetails,
+            tripleTapGestureActionLeft: framework.tripleTapGestureActionLeft,
+            tripleTapGestureActionRight: framework.tripleTapGestureActionRight,
+            tapAndHoldGestureActionLeft: framework.tapAndHoldGestureActionLeft,
+            tapAndHoldGestureActionRight: framework.tapAndHoldGestureActionRight
             
         )
     }

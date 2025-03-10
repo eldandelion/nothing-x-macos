@@ -11,7 +11,6 @@ import SwiftUI
 class MainViewViewModel : ObservableObject {
     
     
-    
     private let bluetoothService: BluetoothService
     
     private let fetchDataUseCase: FetchDataUseCaseProtocol
@@ -28,6 +27,13 @@ class MainViewViewModel : ObservableObject {
 
     @Published var eqProfiles: EQProfiles = .BALANCED
     @Published var navigationPath = NavigationPath()
+    
+    @Published var leftTripleTapAction: TripleTapGestureActions = .NO_EXTRA_ACTION
+    @Published var rightTripleTapAction: TripleTapGestureActions = .SKIP_BACK
+    @Published var leftTapAndHoldAction: TapAndHoldGestureActions = .NO_EXTRA_ACTION
+    @Published var rightTapAndHoldAction: TapAndHoldGestureActions = .NOISE_CONTROL
+    
+    
     
     init(bluetoothService: BluetoothService, nothingRepository: NothingRepository, nothingService: NothingService) {
         
@@ -77,7 +83,13 @@ class MainViewViewModel : ObservableObject {
 //            }
             if let device = notification.object as? NothingDeviceEntity {
                 self.nothingDevice = device
-                self.eqProfiles = device.listeningMode
+                withAnimation {
+                    self.eqProfiles = device.listeningMode
+                    self.rightTripleTapAction = device.tripleTapGestureActionRight
+                    self.leftTripleTapAction = device.tripleTapGestureActionLeft
+                    self.rightTapAndHoldAction = device.tapAndHoldGestureActionRight
+                    self.leftTapAndHoldAction = device.tapAndHoldGestureActionLeft
+                }
                 
                 self.jsonEncoder.addOrUpdateDevice(device.toDTO())
                 
@@ -98,6 +110,10 @@ class MainViewViewModel : ObservableObject {
         }
         
         
+    }
+    
+    func navigateToBluetoothIsOff() {
+        navigationPath.append(Destination.bluetooth_off)
     }
     
     

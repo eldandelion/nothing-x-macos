@@ -14,7 +14,9 @@ struct ConnectView: View {
     @State var topButtonText: String? = "Retry"
     @State var bottomButtonText: String? = "Cancel"
     
-    @StateObject private var viewModel = ConnectViewViewModel(nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared)
+    @StateObject private var viewModel = ConnectViewViewModel(nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared, bluetoothService: BluetoothServiceImpl())
+    
+    @EnvironmentObject var mainViewModel: MainViewViewModel
     
     var body: some View {
         
@@ -28,7 +30,7 @@ struct ConnectView: View {
                 DeviceNameDotTextView()
                 Spacer()
             }
-            
+            .padding(.bottom, 4)
             .zIndex(1)
             
             
@@ -67,8 +69,14 @@ struct ConnectView: View {
                         
                     } else {
                         // Connect Button
-                        Button("CONNECT") {
-                            viewModel.connect()
+                        Button("RECONNECT") {
+                            viewModel.checkBluetoothStatus()
+                            if viewModel.isBluetoothOn {
+                                viewModel.connect()
+                            } else {
+                                mainViewModel.navigateToBluetoothIsOff()
+                            }
+                        
                         }
                         .buttonStyle(OffWhiteConnectButton())
                         .focusable(false)
@@ -94,7 +102,7 @@ struct ConnectView: View {
                 
                 ModalSheetView(isPresented: $viewModel.isFailedToConnectPresented, title: $title, text: $text, topButtonText: $topButtonText, bottomButtonText: $bottomButtonText, action: {
                     viewModel.retryConnect()
-                })
+                }, onCancelAction: {})
                 .animation(.easeInOut, value: viewModel.isFailedToConnectPresented) // Animate the appearance
                 .offset(y: viewModel.isFailedToConnectPresented ? 0 : 180) // Slide in from the bottom
                 .zIndex(3)
@@ -103,15 +111,10 @@ struct ConnectView: View {
             
         }
         
-        .padding(.top, 4)
-        .padding(.leading, 4)
-        .padding(.trailing, 4)
         .padding(.bottom, 0)
         .background(.black)
         .frame(width: 250,height: 230)
         .navigationBarBackButtonHidden(true)
-        
-        
         
     }
         

@@ -10,7 +10,7 @@ import SwiftUI
 struct DeviceNameDotTextView: View {
     var body: some View {
         VStack {
-            Spacer(minLength: 5)
+            Spacer(minLength: 4)
             //ear (1)
             Text("ear (1)")
                 .font(.custom("5by7", size: 20)).foregroundColor(Color(#colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)))
@@ -21,7 +21,7 @@ struct DeviceNameDotTextView: View {
             
             Spacer(minLength: 150)
                 
-        }.padding(.horizontal, 6)
+        }.padding(.horizontal, 8)
     }
 }
 

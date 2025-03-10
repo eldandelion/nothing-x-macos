@@ -6,13 +6,13 @@
 //
 
 import SwiftUI
-import TipKit
+
 
 @main
 struct Nothing_X_MacOSApp: App {
-    @StateObject var store = Store()
-    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared) 
-    
+    @StateObject private var store = Store()
+    @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared)
+    @StateObject private var budsPickerViewModel = BudsPickerComponentViewModel()
 
     var body: some Scene {
         MenuBarExtra {
@@ -25,21 +25,29 @@ struct Nothing_X_MacOSApp: App {
                                 .transition(.asymmetric(insertion: .opacity, removal: .opacity))
                         case .equalizer: EqualizerView(eqMode: $viewModel.eqProfiles)
                         case .controls: ControlsView()
-                        case .controlsTripleTap: ControlsDetailView(destination: .controlsTripleTap)
-                        case .controlsTapHold: ControlsDetailView(destination: .controlsTapHold)
+                        case .controlsTripleTap: ControlsDetailView(destination: .controlsTripleTap, leftTripleTapAction: $viewModel.leftTripleTapAction, rightTripleTapAction: $viewModel.rightTripleTapAction, leftTapAndHoldAction: $viewModel.leftTapAndHoldAction, rightTapAndHoldAction: $viewModel.rightTapAndHoldAction)
+                        case .controlsTapHold: ControlsDetailView(destination: .controlsTapHold,
+                                                                  leftTripleTapAction: $viewModel.leftTripleTapAction, rightTripleTapAction: $viewModel.rightTripleTapAction, leftTapAndHoldAction: $viewModel.leftTapAndHoldAction, rightTapAndHoldAction: $viewModel.rightTapAndHoldAction
+                        )
                         case .settings: SettingsView()
                         case .findMyBuds: FindMyBudsView()
                         case .discover: DiscoverView()
                                 .transition(.asymmetric(insertion: .opacity, removal: .opacity))
                         case .connect: ConnectView()
-                                .animation(nil)
-                            //  .transition(.asymmetric(insertion: .opacity, removal: .opacity))
+                            //                                .animation(nil)
+                                .transition(.asymmetric(insertion: .opacity, removal: .opacity))
+                        case .discover_started: DiscoverStartedView()
+                        case .bluetooth_off: BluetoothIsOffView()
                             
                         }
+                        
+                        
                     }
+                    
             }
             .environmentObject(store)
             .environmentObject(viewModel)
+            .environmentObject(budsPickerViewModel)
             .frame(width: 250, height: 230)
         
             

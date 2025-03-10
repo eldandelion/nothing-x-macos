@@ -17,13 +17,15 @@ class ConnectViewViewModel : ObservableObject {
     @Published var isFailedToConnectPresented = false
     @Published var retry = false
     
+    private let isBluetoothOnUseCase: IsBluetoothOnUseCaseProtocol
+    @Published var isBluetoothOn = false
     
-    init(nothingRepository: NothingRepository, nothingService: NothingService) {
-        
-        
+    
+    init(nothingRepository: NothingRepository, nothingService: NothingService, bluetoothService: BluetoothService) {
         
         self.nothingRepository = nothingRepository
         self.nothingService = nothingService
+        self.isBluetoothOnUseCase = IsBluetoothOnUseCase(bluetoothService: bluetoothService)
         
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
             
@@ -41,8 +43,6 @@ class ConnectViewViewModel : ObservableObject {
                 self.isLoading = false
             }
             
-      
-
         }
         
         NotificationCenter.default.addObserver(forName: Notification.Name(Notifications.REQUEST_RETRY.rawValue), object: nil, queue: .main) {
@@ -55,10 +55,11 @@ class ConnectViewViewModel : ObservableObject {
             
         }
         
-  
-        
     }
     
+    func checkBluetoothStatus() {
+        isBluetoothOn = isBluetoothOnUseCase.isBluetoothOn()
+    }
     
     func connect() {
         isLoading = true

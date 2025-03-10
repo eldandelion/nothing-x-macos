@@ -6,12 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 class NoiseControlViewViewModel : ObservableObject {
     
     private let nothingService: NothingService
     
+    @Published var noiseSelectionOffset: CGFloat = 61
+    @Published var anc: NoiseControlOptions = .off
+    
     init(nothingService: NothingService) {
+        
+ 
         
         self.nothingService = nothingService
         
@@ -20,14 +26,28 @@ class NoiseControlViewViewModel : ObservableObject {
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
             
             if let device = notification.object as? NothingDeviceEntity {
-                self.anc = self.ancToNoiseControlOptions(anc: device.anc)
                 
+                
+                
+                withAnimation {
+                    self.anc = self.ancToNoiseControlOptions(anc: device.anc)
+                    switch self.anc {
+                    case .off:
+                        self.noiseSelectionOffset = 61
+                    case .transparency:
+                        self.noiseSelectionOffset = 0
+                    case .anc:
+                        self.noiseSelectionOffset = -61
+                    }
+                }
             }
         }
+        
+        
     }
         
     
-    @Published var anc: NoiseControlOptions = .off
+
     
     func ancToNoiseControlOptions(anc: ANC) -> NoiseControlOptions {
         
@@ -38,6 +58,8 @@ class NoiseControlViewViewModel : ObservableObject {
         case .TRANSPARENCY:
             return .transparency
         case .ON_LOW:
+            return .anc
+        case .ON_HIGH:
             return .anc
         default:
             return .off
@@ -62,6 +84,7 @@ class NoiseControlViewViewModel : ObservableObject {
     
     func switchANC(anc: ANC) {
         nothingService.switchANC(mode: anc)
+       
     }
     
     

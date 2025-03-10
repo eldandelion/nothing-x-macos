@@ -33,7 +33,13 @@ class NothingDeviceEntity : Codable, ObservableObject {
     var isLowLatencyOn: Bool
     var isInEarDetectionOn: Bool
     
-    init(name: String, serial: String, codename: Codenames, firmware: String, sku: SKU, leftBattery: Int, rightBattery: Int, caseBattery: Int, isLeftCharging: Bool, isRightCharging: Bool, isCaseCharging: Bool, isLeftConnected: Bool, isRightConnected: Bool, isCaseConnected: Bool, anc: ANC, listeningMode: EQProfiles, isLowLatencyOn: Bool, isInEarDetectionOn: Bool, bluetoothDetails: BluetoothDeviceEntity) {
+    var tripleTapGestureActionLeft: TripleTapGestureActions
+    var tripleTapGestureActionRight: TripleTapGestureActions
+    
+    var tapAndHoldGestureActionLeft: TapAndHoldGestureActions
+    var tapAndHoldGestureActionRight: TapAndHoldGestureActions
+    
+    init(name: String, serial: String, codename: Codenames, firmware: String, sku: SKU, leftBattery: Int, rightBattery: Int, caseBattery: Int, isLeftCharging: Bool, isRightCharging: Bool, isCaseCharging: Bool, isLeftConnected: Bool, isRightConnected: Bool, isCaseConnected: Bool, anc: ANC, listeningMode: EQProfiles, isLowLatencyOn: Bool, isInEarDetectionOn: Bool, bluetoothDetails: BluetoothDeviceEntity, tripleTapGestureActionLeft: TripleTapGestureActions, tripleTapGestureActionRight: TripleTapGestureActions, tapAndHoldGestureActionLeft: TapAndHoldGestureActions, tapAndHoldGestureActionRight: TapAndHoldGestureActions) {
         self.name = name
         self.serial = serial
         self.codename = codename
@@ -53,6 +59,10 @@ class NothingDeviceEntity : Codable, ObservableObject {
         self.isLowLatencyOn = isLowLatencyOn
         self.isInEarDetectionOn = isInEarDetectionOn
         self.bluetoothDetails = bluetoothDetails
+        self.tripleTapGestureActionLeft = tripleTapGestureActionLeft
+        self.tripleTapGestureActionRight = tripleTapGestureActionRight
+        self.tapAndHoldGestureActionLeft = tapAndHoldGestureActionLeft
+        self.tapAndHoldGestureActionRight = tapAndHoldGestureActionRight
     }
     
     

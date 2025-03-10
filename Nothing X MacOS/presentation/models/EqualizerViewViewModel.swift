@@ -6,17 +6,18 @@
 //
 
 import Foundation
+import SwiftUI
 
 class EqualizerViewViewModel : ObservableObject {
     
     
-    private let nothingService: NothingService
-    @Published var eq: EQProfiles = .BALANCED
+    private let switchEqUseCase: SwitchEqUseCaseProtocol
     
+    @Published var eq: EQProfiles = .BALANCED
     
     init(nothingService: NothingService) {
         
-        self.nothingService = nothingService
+        self.switchEqUseCase = SwitchEqUseCase(service: nothingService)
         
         
         NotificationCenter.default.addObserver(forName: Notification.Name(DataNotifications.REPOSITORY_DATA_UPDATED.rawValue), object: nil, queue: .main) { notification in
@@ -26,7 +27,6 @@ class EqualizerViewViewModel : ObservableObject {
                 if self.eq != device.listeningMode {
                     self.eq = device.listeningMode
                 }
-               
                 
             }
         }
@@ -36,7 +36,7 @@ class EqualizerViewViewModel : ObservableObject {
     
     func switchEQ(eq: EQProfiles) {
     
-        nothingService.switchEQ(mode: eq)
+        switchEqUseCase.switchEQ(mode: eq)
     }
     
 }

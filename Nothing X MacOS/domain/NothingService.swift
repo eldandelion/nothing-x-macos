@@ -21,6 +21,8 @@ protocol NothingService {
     
     func discoverNothing()
     
+    func stopNothingDiscovery()
+    
     func connectToNothing(device: BluetoothDeviceEntity)
     
     func isNothingConnected() -> BluetoothDeviceEntity?
@@ -30,6 +32,8 @@ protocol NothingService {
     func switchLowLatency(mode: Bool)
     
     func switchInEarDetection(mode: Bool)
+    
+    func switchGesture(device: DeviceType, gesture: GestureType, action: UInt8)
     
     func disconnect()
     

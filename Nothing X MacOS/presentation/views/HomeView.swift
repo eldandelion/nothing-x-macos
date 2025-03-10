@@ -20,6 +20,7 @@ struct HomeView: View {
                 Spacer()
             }
             
+            .padding(.bottom, 4)
             .zIndex(1)
        
 
@@ -38,17 +39,14 @@ struct HomeView: View {
                 
                 
                 VStack {
-                    Spacer()
+                    
                     
                     //HStack - Equaliser | Controls
                     HStack(spacing: 5) {
                         
-                        
-                        
+
                         //EQUALISER
-                        
-                       
-                        
+                         
                         if #available(macOS 14.0, *) {
                             NavigationLink("EQUALISER", value: Destination.equalizer)
                                 .buttonStyle(GreyButton())
@@ -103,7 +101,7 @@ struct HomeView: View {
             }
                     
         }
-        .padding(4)
+    
         .background(.black)
         .frame(width: 250, height: 230)
         .navigationBarBackButtonHidden(true)

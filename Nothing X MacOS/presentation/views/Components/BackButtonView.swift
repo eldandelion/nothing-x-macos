@@ -23,8 +23,10 @@ struct BackButtonView: View {
                 .font(.system(size: 16))
                 .foregroundColor(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
         }
-        .buttonStyle(BlackImageButtonCicle())
+        .buttonStyle(TransparentButton())
         .focusable(false)
+        .padding(.vertical, 10)
+        .padding(.leading, 8)
     
   
     }

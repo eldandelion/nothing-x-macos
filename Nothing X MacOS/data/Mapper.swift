@@ -29,7 +29,12 @@ extension NothingDeviceDTO {
             listeningMode: .BALANCED,
             isLowLatencyOn: false,
             isInEarDetectionOn: false,
-            bluetoothDetails: self.bluetoothDetails.toEntity() // Assuming a similar mapping exists for BluetoothDeviceDTO
+            bluetoothDetails: self.bluetoothDetails.toEntity(), // Assuming a similar mapping exists for BluetoothDeviceDTO
+            tripleTapGestureActionLeft: .NO_EXTRA_ACTION,
+            tripleTapGestureActionRight: .NO_EXTRA_ACTION,
+            tapAndHoldGestureActionLeft: .NO_EXTRA_ACTION,
+            tapAndHoldGestureActionRight: .NO_EXTRA_ACTION
+        
         )
     }
 }

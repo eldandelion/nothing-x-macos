@@ -16,6 +16,7 @@ struct ModalSheetView : View {
     @Binding var bottomButtonText: String?
 
     let action: () -> Void
+    let onCancelAction: () -> Void
     
         var body: some View {
             VStack {
@@ -62,6 +63,7 @@ struct ModalSheetView : View {
                         Button(bottomButtonText) {
                             withAnimation {
                                 isPresented = false
+                                onCancelAction()
                             }
                         }
                         .buttonStyle(TransparentButton())

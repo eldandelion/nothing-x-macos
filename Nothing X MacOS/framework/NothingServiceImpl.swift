@@ -98,6 +98,28 @@ class NothingServiceImpl : NothingService {
     }
     
 
+    func switchGesture(device: DeviceType, gesture: GestureType, action: UInt8) {
+        let payload: [UInt8] = [0x01, device.rawValue, 0x01, gesture.rawValue, action]
+        
+        addRequest(command: Commands.SET_GESTURE, operationID: Commands.SET_GESTURE.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: payload) {
+            
+            result in
+            switch result {
+            case .success:
+                print("Successfully switched gesture settings")
+                self.updateGestureInNothing(deviceType: device, gestureType: gesture, action: action)
+                
+            case .failure(let error):
+                print("Failed to switch gesture settings: \(error.localizedDescription)")
+                
+            }
+        }
+    }
+    
+    func stopNothingDiscovery() {
+        bluetoothManager.stopDeviceInquiry()
+    }
+    
     func switchLowLatency(mode: Bool) {
         
         var array: [UInt8] = [0x02, 0x00]
@@ -105,7 +127,7 @@ class NothingServiceImpl : NothingService {
             array[0] = 0x01
         }
         
-        addRequest(command: Commands.GET_LATENCY, operationID: Commands.GET_LATENCY.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: array) {
+        addRequest(command: Commands.SET_LATENCY, operationID: Commands.SET_LATENCY.firstEightBits, requestTimeout: 1000, responseTimeout: 1000, payload: array) {
             result in
             switch result {
             case .success:
@@ -322,6 +344,18 @@ class NothingServiceImpl : NothingService {
                 }
             }
             
+            addRequest(command: Commands.GET_GESTURES, operationID: Commands.GET_GESTURES.firstEightBits, requestTimeout: 1000, responseTimeout: 1000) {
+                result in
+                switch result {
+                case .success:
+                    print("Successfully fetched gestures")
+                case .failure(let error):
+                    print("Failed to gestures: \(error.localizedDescription)")
+                    
+                }
+            }
+
+            
         }
         
     }
@@ -490,6 +524,32 @@ class NothingServiceImpl : NothingService {
         print("Battery Case: \(nothingDevice?.caseBattery), Charging: \(nothingDevice?.isCaseCharging)")
     }
     
+    private func readGestures(hexArray: [UInt8]) -> [(deviceType: DeviceType, gestureType: GestureType, action: UInt8)] {
+        let gestureCount: UInt8 = hexArray[8]
+        
+        var array: [(deviceType: DeviceType, gestureType: GestureType, action: UInt8)] = []
+        
+        for i in 0..<gestureCount { // Loop from 0 to gestureCount - 1
+            
+            let device = DeviceType(rawValue: hexArray[9 + Int(i) * 4]) // Assign values from hexString to the dictionary
+            
+            let common = hexArray[10 + Int(i) * 4]
+            let gesture = GestureType(rawValue: hexArray[11 + Int(i) * 4])
+            
+            if let device = device, let gesture = gesture {
+                array.append((deviceType: device, gestureType: gesture, action: hexArray[12 + Int(i) * 4]))
+            }
+            
+        }
+        
+        for a in array {
+            print("device \(a.0) " + "gesture \(a.1) " + "action \(a.2)")
+        }
+        
+        return array
+        
+    }
+    
     private func readANC(hexArray: [UInt8]) {
         
         let ancStatus = hexArray[9]
@@ -615,6 +675,8 @@ class NothingServiceImpl : NothingService {
         
     }
     
+    
+    
     private func onDataReceived(rawData: [UInt8]) {
         
         
@@ -709,6 +771,11 @@ class NothingServiceImpl : NothingService {
             print("IN EAR MODE \(inEarMode)")
             nothingDevice?.isInEarDetectionOn = inEarMode
             
+        case Commands.READ_GESTURES.rawValue:
+            let result = readGestures(hexArray: rawData)
+            for device in result {
+                updateGestureInNothing(deviceType: device.0, gestureType: device.1, action: device.2)
+            }
             
         default:
             print("Unhandled command \(command)")
@@ -726,6 +793,24 @@ class NothingServiceImpl : NothingService {
         }
         processNextRequest()
         
+    }
+    
+    private func updateGestureInNothing(deviceType: DeviceType, gestureType: GestureType, action: UInt8) {
+        if deviceType == .LEFT {
+            if gestureType == .TAP_AND_HOLD {
+                nothingDevice?.tapAndHoldGestureActionLeft = TapAndHoldGestureActions(rawValue: action) ?? TapAndHoldGestureActions.NO_EXTRA_ACTION
+            }
+            if gestureType == .TRIPLE_TAP {
+                nothingDevice?.tripleTapGestureActionLeft = TripleTapGestureActions(rawValue: action) ?? TripleTapGestureActions.NO_EXTRA_ACTION
+            }
+        } else if deviceType == .RIGHT {
+            if gestureType == .TAP_AND_HOLD {
+                nothingDevice?.tapAndHoldGestureActionRight = TapAndHoldGestureActions(rawValue: action) ?? TapAndHoldGestureActions.NO_EXTRA_ACTION
+            }
+            if gestureType == .TRIPLE_TAP {
+                nothingDevice?.tripleTapGestureActionRight = TripleTapGestureActions(rawValue: action) ?? TripleTapGestureActions.NO_EXTRA_ACTION
+            }
+        }
     }
     
     private func getCommand(header: [UInt8]) -> UInt16 {

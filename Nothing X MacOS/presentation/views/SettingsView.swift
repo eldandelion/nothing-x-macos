@@ -23,17 +23,14 @@ struct SettingsView: View {
         
         ZStack(alignment: .bottom) {
             
-            VStack {
+            VStack(spacing: 0) {
                 
                 // Back - Heading - Settings | Quit
                 HStack {
                     // Back
                     BackButtonView()
-                    
+                 
                     Spacer()
-                    
-                    // Quit
-                    QuitButtonView()
                 }
                 
                 ScrollView(.vertical, showsIndicators: false) {
@@ -51,7 +48,7 @@ struct SettingsView: View {
                             
                             Spacer()
                         }
-                        .padding(.vertical, 4)
+                        .padding(.vertical, 6)
                         
                         VStack(alignment: .leading) {
                         
@@ -195,7 +192,7 @@ struct SettingsView: View {
                 
             }
             .navigationBarBackButtonHidden(true)
-            .padding(4)
+            
             .background(.black)
             .frame(width: 250, height: 230)
             .onAppear {
@@ -226,7 +223,7 @@ struct SettingsView: View {
                         viewModel.shouldShowForgetDialog = false
                     }
 
-                })
+                }, onCancelAction: {})
                 .animation(.easeInOut, value: viewModel.shouldShowForgetDialog) // Animate the appearance
                 .offset(y: viewModel.shouldShowForgetDialog ? 0 : 180) // Slide in from the bottom
                 .zIndex(2)

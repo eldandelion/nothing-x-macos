@@ -30,9 +30,11 @@ struct QuitButtonView: View {
                     .foregroundColor(Color(#colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)))
                     .font(.system(size: 16))
             }
-            .buttonStyle(BlackImageButtonCicle())
+            .buttonStyle(TransparentButton())
             .keyboardShortcut("q")
             .focusable(false)
+            .padding(.vertical, 8)
+            .padding(.trailing, 8)
             
             if shouldShowCloseAppWarning {
                 Color.black.opacity(0.4) // Background dimming
@@ -48,7 +50,7 @@ struct QuitButtonView: View {
                     
                     NSApplication.shared.terminate(nil)
 
-                })
+                }, onCancelAction: {})
                 .animation(.easeInOut, value: shouldShowCloseAppWarning) // Animate the appearance
                 .offset(y: shouldShowCloseAppWarning ? 0 : 180) // Slide in from the bottom
                 .zIndex(4)

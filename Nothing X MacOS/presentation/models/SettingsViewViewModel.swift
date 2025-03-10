@@ -44,7 +44,10 @@ class SettingsViewViewModel : ObservableObject {
                 
                 print("Settings View latency \(device.isLowLatencyOn)")
                 print("Settings View in ear \(device.isInEarDetectionOn)")
+                
                 self.latencySwitch = device.isLowLatencyOn
+                
+                
                 self.inEarSwitch = device.isInEarDetectionOn
                 self.nothingDevice = device
                 
