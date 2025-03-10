@@ -4,6 +4,14 @@ This is a companion app for Nothing Ear (1) for MacOS. The Nothing X iOS App ins
 
 > Note: The app is under early development. Bluetooth bug fixes and UI optimisations are under way. Feel free to poke around. So far tested only with Nothing Ear (1).
 
+Special credits to:
+
+> Ear (web) project developers for bluetooth communication code, it has been really helpful in developing of Nothing X Mac. 
+Link to Ear (web): https://earweb.bttl.xyz
+
+> Arunavo Ray. The user interface of Nothing X Mac is based on his original work.
+Link to original repository: https://github.com/arunavo4/nothing-x-macos?ysclid=m7w2denfko175827967
+
 
 ## UI Screenshots
 
