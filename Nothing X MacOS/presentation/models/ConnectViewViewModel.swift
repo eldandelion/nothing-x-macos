@@ -78,4 +78,16 @@ class ConnectViewViewModel : ObservableObject {
         
     }
     
+    /// Attempt to connect on startup if there are saved devices
+    func attemptConnectOnStartup() {
+        guard nothingRepository.getSaved().count > 0 else {
+            return
+        }
+
+        self.checkBluetoothStatus()
+        if self.isBluetoothOn {
+            self.connect()
+        }
+    }
+    
 }

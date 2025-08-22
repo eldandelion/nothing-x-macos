@@ -6,13 +6,30 @@
 //
 
 import SwiftUI
-
+import Foundation
 
 @main
 struct Nothing_X_MacOSApp: App {
     @StateObject private var store = Store()
     @StateObject private var viewModel = MainViewViewModel(bluetoothService: BluetoothServiceImpl(), nothingRepository: NothingRepositoryImpl.shared, nothingService: NothingServiceImpl.shared)
     @StateObject private var budsPickerViewModel = BudsPickerComponentViewModel()
+    
+    init() {
+        NotificationCenter.default.addObserver(
+            forName: Notification.Name(BluetoothNotifications.BLUETOOTH_ON.rawValue),
+            object: nil,
+            queue: .main
+        ) {
+            notification in
+            
+            let connectVM = ConnectViewViewModel(
+                nothingRepository: NothingRepositoryImpl.shared,
+                nothingService: NothingServiceImpl.shared,
+                bluetoothService: BluetoothServiceImpl()
+            )
+            connectVM.attemptConnectOnStartup()   
+        }
+    }
 
     var body: some Scene {
         MenuBarExtra {
